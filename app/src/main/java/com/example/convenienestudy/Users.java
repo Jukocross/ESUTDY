@@ -13,7 +13,7 @@ public abstract class Users {
 
     public Users(String name, String email, int schoolID, String userId){
         this.name = name;
-        this.email = name;
+        this.email = email;
         this.schoolId = schoolID;
         this.userId = userId;
     }

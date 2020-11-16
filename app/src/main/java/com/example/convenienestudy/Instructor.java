@@ -2,26 +2,26 @@ package com.example.convenienestudy;
 
 import java.util.ArrayList;
 
-public class Instructors extends Users {
+public class Instructor extends Users {
 
     private static int idCounter;
-    private int instructorsId;
-    private ArrayList<Quiz> quizArrayList;
+    private int instructorId;
+    private ArrayList<Quiz> lstOfQuiz;
 
-    public Instructors(String name, String email, int schoolId, String userId) {
+    public Instructor(String name, String email, int schoolId, String userId) {
         super(name, email, schoolId, userId);
-        this.instructorsId = idCounter;
+        this.instructorId = idCounter;
         idCounter++;
     }
 
-    public int getInstructorsId() {
-        return instructorsId;
+    public int getInstructorId() {
+        return instructorId;
     }
 
     public boolean addQuiz(Quiz q){
         boolean added = false;
-        if (!quizArrayList.contains(q)){
-            quizArrayList.add(q);
+        if (!lstOfQuiz.contains(q)){
+            lstOfQuiz.add(q);
             added = true;
         }
         return added;
@@ -29,8 +29,8 @@ public class Instructors extends Users {
 
     public boolean removeQuiz(Quiz q){
         boolean removed = false;
-        if (quizArrayList.contains(q)){
-            quizArrayList.remove(q);
+        if (lstOfQuiz.contains(q)){
+            lstOfQuiz.remove(q);
             removed = true;
         }
         return removed;

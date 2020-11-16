@@ -3,13 +3,13 @@ package com.example.convenienestudy;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Students extends Users {
+public class Student extends Users {
 
     private static int idCounter = 0;
     private int studentId;
     private ArrayList<Quiz> quizArrayList;
 
-    public Students(String name, String email, int schoolID , String userId) {
+    public Student(String name, String email, int schoolID , String userId) {
         super(name, email, schoolID, userId);
         this.studentId = idCounter;
         idCounter++;

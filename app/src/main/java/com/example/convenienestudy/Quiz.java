@@ -7,22 +7,25 @@ import java.util.ArrayList;
 
 public class Quiz implements Parcelable {
 
-    private String Title;
-    private String Description;
+    //TODO CURRENTSCORE CAN BE ABOLISH WITH THE NEW CLASS ASSIGNMENT
+
+    private String title;
+    private String description;
     private int totalScore = 0;
     private int currentScore = 0;
     private ArrayList<Question> listOfQuestion = new ArrayList<Question>();
-    private int quizNumber;
+    private int quizNumber, instructorId;
     private boolean quizCompleted;
 
 
     public Quiz(){
     }
 
-    public Quiz(String title, String description, int quizNumber) {
-        this.Title = title;
-        this.Description = description;
+    public Quiz(String title, String description, int quizNumber,int instructorId) {
+        this.title = title;
+        this.description = description;
         this.quizNumber = quizNumber;
+        this.instructorId = instructorId;
     }
 
     public static final Creator<Quiz> CREATOR = new Creator<Quiz>() {
@@ -36,26 +39,37 @@ public class Quiz implements Parcelable {
     };
 
     protected Quiz(Parcel in){
-        Title = in.readString();
-        Description = in.readString();
+        title = in.readString();
+        description = in.readString();
         totalScore = in.readInt();
         currentScore = in.readInt();
         in.readList(listOfQuestion, Quiz.class.getClassLoader());
+        quizNumber = in.readInt();
+        quizCompleted = in.readInt() == 1;
+        instructorId = in.readInt();
     }
 
     public String getDescription() {
-        if (Description == null){
+        if (description == null){
             return "Description";
         }
-        return Description;
+        return description;
     }
 
-    public int getQuizId() {
+    public int getQuizNumber() {
         return quizNumber;
     }
 
+    public void setQuizNumber(int quizNumber) {
+        this.quizNumber = quizNumber;
+    }
+
+    public String getQuizNumberString() {
+        return Integer.toString(quizNumber);
+    }
+
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public int getTotalScore() {
@@ -68,6 +82,10 @@ public class Quiz implements Parcelable {
 
     public int getCurrentScore() {
         return currentScore;
+    }
+
+    public int getInstructorId() {
+        return instructorId;
     }
 
     public String getScoreToString(){
@@ -103,11 +121,14 @@ public class Quiz implements Parcelable {
     @Override
     //Parcel
     public void writeToParcel(Parcel dest, int flags){
-        dest.writeString(Title);
-        dest.writeString(Description);
+        dest.writeString(title);
+        dest.writeString(description);
         dest.writeInt(totalScore);
         dest.writeInt(currentScore);
         dest.writeList(listOfQuestion);
+        dest.writeInt(quizNumber);
+        dest.writeInt(quizCompleted ? 1 : 0);
+        dest.writeInt(instructorId);
     }
     public int describeContents() {
         return 0;

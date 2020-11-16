@@ -13,7 +13,7 @@ public class Question implements Parcelable {
     private String mcqChoice4 = "";
     private int questionScore;
     private boolean isSelected, completed = false;
-    private int questionId;
+    private int questionId, quizId;
 
     public Question(){
         this.questionId = idCounter;
@@ -30,6 +30,7 @@ public class Question implements Parcelable {
         mcqChoice4 = choice4;
         quiz.addQuestion(this);
         quiz.updateMaxScore(score);
+        this.quizId = quiz.getQuizNumber();
         this.questionId = idCounter;
         idCounter++;
     }
@@ -106,6 +107,10 @@ public class Question implements Parcelable {
 
     public void setMcqChoice3(String mcqChoice3) {
         this.mcqChoice3 = mcqChoice3;
+    }
+
+    public int getQuizId() {
+        return quizId;
     }
 
     public String getMcqChoice4() {

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,8 +18,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,7 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private Button registerBtn, loginBtn;
     private FirebaseAuth firebaseAuth;
-
+    private DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
+    private static final String TAG = "LoginActivity";
+    public static final String instructorIdKey = "instructorId";
+    public static final String sharedPreFile = "com.example.convenienestudy.mainsharedprefs";
+    private int instructorId;
+    SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         registerBtn = (Button) findViewById(R.id.sign_up_btn);
         loginBtn = (Button) findViewById(R.id.login_btn);
 
+        mPreferences = getSharedPreferences(sharedPreFile, MODE_PRIVATE);
+        instructorId = mPreferences.getInt(instructorIdKey, 0);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -69,8 +80,25 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                    finish();
+                                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    DatabaseReference userRef = myRootRef.child("Users").child(userId);
+                                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.hasChild("instructorId")){
+                                                instructorId = snapshot.child("instructorId").getValue(int.class);
+                                                startActivity(new Intent(getApplicationContext(), InstructorMainActivity.class));
+                                                finish();
+                                            }
+                                            if (snapshot.hasChild("studentId")){
+                                                startActivity(new Intent(getApplicationContext(), StudentMainActivity.class));
+                                                finish();
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                        }
+                                    });
                                 } else {
                                     Toast.makeText(LoginActivity.this, "E-mail or password is wrong", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -86,6 +114,14 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putInt(instructorIdKey, instructorId);
+        preferencesEditor.apply();
     }
 
 }

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,14 +19,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class InstructorAddQuiz extends AppCompatActivity {
+public class InstructorAddQuizActivity extends AppCompatActivity {
+
+    //TODO MAKE THE QUIZ ID UNIQUE BY THE ID COUNTER BIGGER THEN THE ARRAY
 
     private Button createQuiz;
     private TextInputLayout quizTitle, quizDescription;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    private DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("lstOfQuiz");
-    private String title, description;
-    private String noOfQuiz;
+    private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+    private DatabaseReference quizRef = userRef.child("lstOfQuiz");
+    private String title, description, noOfQuiz;
+    private int instructorId;
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +41,12 @@ public class InstructorAddQuiz extends AppCompatActivity {
         quizTitle = (TextInputLayout) findViewById(R.id.createQuizTitle);
         quizDescription = (TextInputLayout) findViewById(R.id.createQuizDescription);
 
+        mPreferences = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
+        instructorId = mPreferences.getInt(LoginActivity.instructorIdKey, 0);
+
         Intent getIntent = getIntent();
         noOfQuiz = Integer.toString(getIntent.getIntExtra("numberOfQuiz", 0));
+
 
         createQuiz.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -51,12 +61,20 @@ public class InstructorAddQuiz extends AppCompatActivity {
     ValueEventListener checkForChild = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if (!snapshot.hasChild(noOfQuiz)){
-                quizRef.child(noOfQuiz).setValue(new Quiz(title, description, Integer.parseInt(noOfQuiz)));
-                startActivity(new Intent(InstructorAddQuiz.this, InstructorMainActivity.class));
+            boolean existed = false;
+            for (DataSnapshot ds : snapshot.getChildren()){
+                String tempString = ds.child("title").getValue(String.class);
+                Log.d("TESTING TITLE", "Title is " + title + " And the child is " + tempString);
+                if (title.equalsIgnoreCase(tempString)){
+                    existed = true;
+                }
+            }
+            if (!existed){
+                quizRef.child(noOfQuiz).setValue(new Quiz(title, description, Integer.parseInt(noOfQuiz), instructorId));
+                startActivity(new Intent(InstructorAddQuizActivity.this, InstructorMainActivity.class));
             }
             else {
-                Toast.makeText(InstructorAddQuiz.this, "Quiz exist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InstructorAddQuizActivity.this, "Quiz exist", Toast.LENGTH_SHORT).show();
             }
         }
 
