@@ -6,17 +6,17 @@ import java.util.UUID;
 public class Students extends Users {
 
     private static int idCounter = 0;
-    private int studentID;
+    private int studentId;
     private ArrayList<Quiz> quizArrayList;
 
     public Students(String name, String email, int schoolID , String userId) {
         super(name, email, schoolID, userId);
-        this.studentID = idCounter;
+        this.studentId = idCounter;
         idCounter++;
     }
 
     public int getStudentID() {
-        return studentID;
+        return studentId;
     }
 
     public boolean addQuiz(Quiz q){
