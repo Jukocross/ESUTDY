@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,8 +35,10 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
     private static final String TAG = "LoginActivity";
     public static final String instructorIdKey = "instructorId";
+    public static final String schoolIdKey = "schoolId";
+    public static final String studentIdKey = "studentId";
     public static final String sharedPreFile = "com.example.convenienestudy.mainsharedprefs";
-    private int instructorId;
+    private int instructorId, schoolId, studentId;
     SharedPreferences mPreferences;
 
     @Override
@@ -50,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
 
         mPreferences = getSharedPreferences(sharedPreFile, MODE_PRIVATE);
         instructorId = mPreferences.getInt(instructorIdKey, 0);
+        schoolId = mPreferences.getInt(schoolIdKey, 0);
+        studentId = mPreferences.getInt(studentIdKey, 0);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -85,12 +90,14 @@ public class LoginActivity extends AppCompatActivity {
                                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            schoolId = snapshot.child("schoolId").getValue(int.class);
                                             if (snapshot.hasChild("instructorId")){
                                                 instructorId = snapshot.child("instructorId").getValue(int.class);
                                                 startActivity(new Intent(getApplicationContext(), InstructorMainActivity.class));
                                                 finish();
                                             }
                                             if (snapshot.hasChild("studentId")){
+                                                studentId = snapshot.child("studentId").getValue(int.class);
                                                 startActivity(new Intent(getApplicationContext(), StudentMainActivity.class));
                                                 finish();
                                             }
@@ -121,6 +128,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onPause();
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         preferencesEditor.putInt(instructorIdKey, instructorId);
+        preferencesEditor.putInt(schoolIdKey, schoolId);
+        preferencesEditor.putInt(studentIdKey, studentId);
         preferencesEditor.apply();
     }
 

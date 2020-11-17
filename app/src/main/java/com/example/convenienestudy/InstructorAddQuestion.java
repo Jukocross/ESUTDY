@@ -53,7 +53,6 @@ public class InstructorAddQuestion extends AppCompatActivity {
         createQuestionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                intent = new Intent(InstructorAddQuestion.this, InstructorQuizActivity.class);
                 quizRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("lstOfQuiz").child(quiz.getQuizNumberString());
                 questionRef = quizRef.child("listOfQuestion");
                 questionString = question.getEditText().getText().toString();
@@ -73,9 +72,17 @@ public class InstructorAddQuestion extends AppCompatActivity {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             //TODO MAKE SURE NO DUPLICATE QUESTION
-            if (!snapshot.hasChild(Integer.toString(questionId))){
-                questionRef.child(Integer.toString(questionId)).setValue(new Question(questionString, questionScore, answerString,mcq1, mcq2, mcq3, mcq4, quiz));
+            boolean existed = false;
+            for (DataSnapshot ds: snapshot.getChildren()){
+                String tempString = ds.child("questionTitle").getValue(String.class);
+                if (tempString.equalsIgnoreCase(questionString)){
+                    existed = true;
+                }
+            }
+            if (!existed){
+                questionRef.child(Integer.toString(questionId)).setValue(new Question(questionString, questionScore, answerString,mcq1, mcq2, mcq3, mcq4, quiz, questionId));
                 quizRef.child("totalScore").setValue(quiz.getTotalScore());
+                intent = new Intent(InstructorAddQuestion.this, InstructorQuizActivity.class);
                 intent.putExtra("quizObject", quiz);
                 startActivity(intent);
             }

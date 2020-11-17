@@ -2,7 +2,8 @@ package com.example.convenienestudy;
 
 public class Assignment {
     private int quizNumber, studentId, score;
-    private boolean completed = false;
+    private String feedback = "Await Feedback";
+    private boolean completed;
 
     public Assignment(){}
 
@@ -23,6 +24,10 @@ public class Assignment {
         return score;
     }
 
+    public String getFeedback() {
+        return feedback;
+    }
+
     public boolean isCompleted() {
         return completed;
     }
@@ -33,5 +38,9 @@ public class Assignment {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
 }

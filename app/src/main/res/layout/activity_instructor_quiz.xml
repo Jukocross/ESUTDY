@@ -58,6 +58,13 @@
             android:layout_margin="5dp"/>
     </LinearLayout>
     <Button
+        android:id="@+id/publishQuizButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Publish Quiz"
+        android:clickable="true"
+        android:layout_margin="5dp"/>
+    <Button
         android:id="@+id/deleteQuizButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

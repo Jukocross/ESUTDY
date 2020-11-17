@@ -21,8 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class InstructorAddQuizActivity extends AppCompatActivity {
 
-    //TODO MAKE THE QUIZ ID UNIQUE BY THE ID COUNTER BIGGER THEN THE ARRAY
-
     private Button createQuiz;
     private TextInputLayout quizTitle, quizDescription;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

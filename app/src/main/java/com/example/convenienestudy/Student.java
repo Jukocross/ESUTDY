@@ -6,32 +6,32 @@ import java.util.UUID;
 public class Student extends Users {
 
     private static int idCounter = 0;
-    private int studentId;
-    private ArrayList<Quiz> quizArrayList;
+    private String studentId;
+    private ArrayList<Assignment> listOfAssignment;
 
     public Student(String name, String email, int schoolID , String userId) {
         super(name, email, schoolID, userId);
-        this.studentId = idCounter;
+        this.studentId = String.valueOf(idCounter);
         idCounter++;
     }
 
-    public int getStudentID() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public boolean addQuiz(Quiz q){
+    public boolean addQuiz(Assignment q){
         boolean added = false;
-        if (!quizArrayList.contains(q)){
-            quizArrayList.add(q);
+        if (!listOfAssignment.contains(q)){
+            listOfAssignment.add(q);
             added = true;
         }
         return added;
     }
 
-    public boolean removeQuiz(Quiz q){
+    public boolean removeQuiz(Assignment q){
         boolean removed = false;
-        if (quizArrayList.contains(q)){
-            quizArrayList.remove(q);
+        if (listOfAssignment.contains(q)){
+            listOfAssignment.remove(q);
             removed = true;
         }
         return removed;

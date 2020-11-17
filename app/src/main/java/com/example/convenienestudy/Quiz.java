@@ -15,7 +15,7 @@ public class Quiz implements Parcelable {
     private int currentScore = 0;
     private ArrayList<Question> listOfQuestion = new ArrayList<Question>();
     private int quizNumber, instructorId;
-    private boolean quizCompleted;
+    private boolean quizCompleted, quizPublished;
 
 
     public Quiz(){
@@ -47,6 +47,7 @@ public class Quiz implements Parcelable {
         quizNumber = in.readInt();
         quizCompleted = in.readInt() == 1;
         instructorId = in.readInt();
+        quizPublished = in.readInt() == 1;
     }
 
     public String getDescription() {
@@ -86,6 +87,14 @@ public class Quiz implements Parcelable {
 
     public int getInstructorId() {
         return instructorId;
+    }
+
+    public boolean isQuizPublished() {
+        return quizPublished;
+    }
+
+    public void setQuizPublished(boolean quizPublished) {
+        this.quizPublished = quizPublished;
     }
 
     public String getScoreToString(){
@@ -129,6 +138,7 @@ public class Quiz implements Parcelable {
         dest.writeInt(quizNumber);
         dest.writeInt(quizCompleted ? 1 : 0);
         dest.writeInt(instructorId);
+        dest.writeInt(quizPublished ? 1: 0);
     }
     public int describeContents() {
         return 0;

@@ -18,23 +18,27 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InstructorQuizActivity extends AppCompatActivity {
 
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private TextView quizTitle, quizScore, quizDescription;
     private List<Question> lstQuestion;
+    private HashMap<String, String> lstStudentId;
     private RecyclerView questionRV;
     private RecyclerViewAdapterInstructorQuestion questionAdapter;
-    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton;
-    private DatabaseReference quizRef, questionRef;
+    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton;
+    private DatabaseReference usersRef, quizRef, questionRef;
     private Quiz quiz;
     private String quizNumberString;
-    private int quizNumber, instructorId;
+    private int quizNumber, instructorId, schoolId;
     SharedPreferences mPreferences;
 
     @Override
@@ -46,25 +50,52 @@ public class InstructorQuizActivity extends AppCompatActivity {
         quizScore = (TextView) findViewById(R.id.quizScore_id);
         quizDescription = (TextView) findViewById(R.id.quizDescription_id);
         lstQuestion = new ArrayList<Question>();
+        lstStudentId = new HashMap<String, String>();
 
         mPreferences = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
         instructorId = mPreferences.getInt(LoginActivity.instructorIdKey, 0);
+        schoolId = mPreferences.getInt(LoginActivity.schoolIdKey, 0);
 
         addQuestionButton = (Button) findViewById(R.id.addQuestionButton);
         deleteQuestionButton = (Button) findViewById(R.id.deleteQuestionButton);
         deleteQuizButton = (Button) findViewById(R.id.deleteQuizButton);
+        publishQuizButton = (Button) findViewById(R.id.publishQuizButton);
+
+        usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        Query studentQuery = usersRef.orderByChild("schoolId").equalTo(schoolId);
+        studentQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    if (ds.hasChild("studentId")){
+                        String tempString = ds.child("userId").getValue(String.class);
+                        String tempInt = ds.child("studentId").getValue(String.class);
+                        lstStudentId.put(tempString, tempInt);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Adding Student", error.getDetails());
+            }
+        });
 
         addQuestionButton.setOnClickListener(addQuestionListener);
         deleteQuestionButton.setOnClickListener(deleteQuestionListener);
         deleteQuizButton.setOnClickListener(deleteQuizListener);
+        publishQuizButton.setOnClickListener(publishQuizListener);
 
         Intent intent = getIntent();
         quiz = intent.getExtras().getParcelable("quizObject");
 
         quizNumberString = quiz.getQuizNumberString();
         quizNumber = quiz.getQuizNumber();
+        if (quiz.isQuizPublished()){
+            publishQuizButton.setText("Unpublish Quiz");
+        }
 
-        quizRef = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("lstOfQuiz");
+
+        quizRef = usersRef.child(userId).child("lstOfQuiz");
 
         String title = quiz.getTitle();
         String description = quiz.getDescription();
@@ -89,7 +120,12 @@ public class InstructorQuizActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(InstructorQuizActivity.this, InstructorAddQuestion.class);
             intent.putExtra("quizObject", quiz);
-            intent.putExtra("questionId", lstQuestion.size());
+            int nextQuestionId = 0;
+            if (!lstQuestion.isEmpty()){
+                nextQuestionId = lstQuestion.get(lstQuestion.size()-1).getQuestionId() + 1;
+                Log.d("Adding Question", "Value of id is " + nextQuestionId);
+            }
+            intent.putExtra("questionId", nextQuestionId);
             startActivity(intent);
         }
     };
@@ -99,6 +135,30 @@ public class InstructorQuizActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             startActivity(new Intent(InstructorQuizActivity.this, InstructorDeleteQuestion.class));
+        }
+    };
+
+    View.OnClickListener publishQuizListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (quiz.isQuizPublished()){//Unpublish
+                for (Map.Entry<String, String> entry: lstStudentId.entrySet()){
+                    usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(null);
+                }
+                quiz.setQuizPublished(false);
+            }
+            else {//Publish
+                if(!lstStudentId.isEmpty()) {
+                    for (Map.Entry<String, String> entry : lstStudentId.entrySet()) {
+                        usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(new Assignment(quiz.getQuizNumber(), Integer.parseInt(entry.getValue())));
+                    }
+                    quiz.setQuizPublished(true);
+                }
+            }
+            quizRef.child(quiz.getQuizNumberString()).child("quizPublished").setValue(quiz.isQuizPublished());
+            Intent tempIntent = new Intent(InstructorQuizActivity.this, InstructorQuizActivity.class);
+            tempIntent.putExtra("quizObject", quiz);
+            startActivity(tempIntent);
         }
     };
 
