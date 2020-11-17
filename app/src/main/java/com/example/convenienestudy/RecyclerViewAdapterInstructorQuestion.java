@@ -24,9 +24,8 @@ public class RecyclerViewAdapterInstructorQuestion extends RecyclerView.Adapter<
     @NonNull
     @Override
     public RecyclerViewAdapterInstructorQuestion.InstructorQuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
         LayoutInflater mInflater = LayoutInflater.from(mContext);
-        view = mInflater.inflate(R.layout.cardview_item_instructorquestions,parent,false);
+        View view = mInflater.inflate(R.layout.cardview_item_instructorquestions,parent,false);
         return new InstructorQuestionViewHolder(view);
     }
 

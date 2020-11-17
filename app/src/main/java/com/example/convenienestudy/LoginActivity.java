@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
-    //TODO CHANGE THE RESPECTIVE INTENT TO THE INSTRUCTOR PAGE OR THE STUDENT PAGE DEPEND ON THE ACCOUNT
+    //TODO SET STUDENT AND INSTRUCTOR COUNTER TO BE THE HIGHEST VALUE
 
     private EditText email, password;
     private Button registerBtn, loginBtn;
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String schoolIdKey = "schoolId";
     public static final String studentIdKey = "studentId";
     public static final String sharedPreFile = "com.example.convenienestudy.mainsharedprefs";
-    private int instructorId, schoolId, studentId;
+    private String instructorId, studentId, schoolId;
     SharedPreferences mPreferences;
 
     @Override
@@ -52,9 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.login_btn);
 
         mPreferences = getSharedPreferences(sharedPreFile, MODE_PRIVATE);
-        instructorId = mPreferences.getInt(instructorIdKey, 0);
-        schoolId = mPreferences.getInt(schoolIdKey, 0);
-        studentId = mPreferences.getInt(studentIdKey, 0);
+        instructorId = mPreferences.getString(instructorIdKey, "EMPTY");
+        schoolId = mPreferences.getString(schoolIdKey, "EMPTY");
+        studentId = mPreferences.getString(studentIdKey, "EMPTY");
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -90,14 +90,15 @@ public class LoginActivity extends AppCompatActivity {
                                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            schoolId = snapshot.child("schoolId").getValue(int.class);
+                                            schoolId = snapshot.child("schoolId").getValue(String.class);
+                                            Log.d(TAG, "School id value from database is " + schoolId);
                                             if (snapshot.hasChild("instructorId")){
-                                                instructorId = snapshot.child("instructorId").getValue(int.class);
+                                                instructorId = snapshot.child("instructorId").getValue(String.class);
                                                 startActivity(new Intent(getApplicationContext(), InstructorMainActivity.class));
                                                 finish();
                                             }
                                             if (snapshot.hasChild("studentId")){
-                                                studentId = snapshot.child("studentId").getValue(int.class);
+                                                studentId = snapshot.child("studentId").getValue(String.class);
                                                 startActivity(new Intent(getApplicationContext(), StudentMainActivity.class));
                                                 finish();
                                             }
@@ -127,9 +128,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-        preferencesEditor.putInt(instructorIdKey, instructorId);
-        preferencesEditor.putInt(schoolIdKey, schoolId);
-        preferencesEditor.putInt(studentIdKey, studentId);
+        preferencesEditor.putString(instructorIdKey, instructorId);
+        preferencesEditor.putString(schoolIdKey, schoolId);
+        Log.d(TAG, "School id value stored" + schoolId);
+        preferencesEditor.putString(studentIdKey, studentId);
         preferencesEditor.apply();
     }
 

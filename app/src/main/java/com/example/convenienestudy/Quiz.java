@@ -9,19 +9,18 @@ public class Quiz implements Parcelable {
 
     //TODO CURRENTSCORE CAN BE ABOLISH WITH THE NEW CLASS ASSIGNMENT
 
-    private String title;
-    private String description;
+    private String title,description,instructorId;
     private int totalScore = 0;
     private int currentScore = 0;
     private ArrayList<Question> listOfQuestion = new ArrayList<Question>();
-    private int quizNumber, instructorId;
+    private int quizNumber;
     private boolean quizCompleted, quizPublished;
 
 
     public Quiz(){
     }
 
-    public Quiz(String title, String description, int quizNumber,int instructorId) {
+    public Quiz(String title, String description, int quizNumber,String instructorId) {
         this.title = title;
         this.description = description;
         this.quizNumber = quizNumber;
@@ -46,7 +45,7 @@ public class Quiz implements Parcelable {
         in.readList(listOfQuestion, Quiz.class.getClassLoader());
         quizNumber = in.readInt();
         quizCompleted = in.readInt() == 1;
-        instructorId = in.readInt();
+        instructorId = in.readString();
         quizPublished = in.readInt() == 1;
     }
 
@@ -85,7 +84,7 @@ public class Quiz implements Parcelable {
         return currentScore;
     }
 
-    public int getInstructorId() {
+    public String getInstructorId() {
         return instructorId;
     }
 
@@ -108,6 +107,21 @@ public class Quiz implements Parcelable {
             added = true;
         }
         return added;
+    }
+
+    public boolean updateQuestion(Question q){
+        boolean updated = false;
+        if(listOfQuestion.contains(q)){
+            for(Question s : listOfQuestion){
+                if (s.getQuestionId() == q.getQuestionId()){
+                    listOfQuestion.remove(s);
+                    listOfQuestion.add(q);
+                    updated = true;
+                    break;
+                }
+            }
+        }
+        return updated;
     }
 
     public boolean removeQuestion(Question q){
@@ -137,7 +151,7 @@ public class Quiz implements Parcelable {
         dest.writeList(listOfQuestion);
         dest.writeInt(quizNumber);
         dest.writeInt(quizCompleted ? 1 : 0);
-        dest.writeInt(instructorId);
+        dest.writeString(instructorId);
         dest.writeInt(quizPublished ? 1: 0);
     }
     public int describeContents() {

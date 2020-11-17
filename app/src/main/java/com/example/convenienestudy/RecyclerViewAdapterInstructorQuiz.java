@@ -27,9 +27,8 @@ public class RecyclerViewAdapterInstructorQuiz extends RecyclerView.Adapter<Recy
     @NonNull
     @Override
     public RecyclerViewAdapterInstructorQuiz.InstructorQuizViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
         LayoutInflater mInflater = LayoutInflater.from(mContext);
-        view = mInflater.inflate(R.layout.cardview_item_instructorquizes,parent,false);
+        View view = mInflater.inflate(R.layout.cardview_item_instructorquizes,parent,false);
         return new InstructorQuizViewHolder(view);
     }
 

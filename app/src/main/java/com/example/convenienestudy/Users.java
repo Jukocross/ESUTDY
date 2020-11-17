@@ -6,12 +6,12 @@ public abstract class Users {
 
     private static int idCounter;
     private String name, email, userId;
-    private int schoolId;
+    private String schoolId;
 
     public Users() {
     }
 
-    public Users(String name, String email, int schoolID, String userId){
+    public Users(String name, String email, String schoolID, String userId){
         this.name = name;
         this.email = email;
         this.schoolId = schoolID;
@@ -30,7 +30,7 @@ public abstract class Users {
         return userId;
     }
 
-    public int getSchoolId() {
+    public String getSchoolId() {
         return schoolId;
     }
 }

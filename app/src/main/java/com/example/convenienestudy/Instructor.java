@@ -5,16 +5,16 @@ import java.util.ArrayList;
 public class Instructor extends Users {
 
     private static int idCounter;
-    private int instructorId;
+    private String instructorId;
     private ArrayList<Quiz> lstOfQuiz;
 
-    public Instructor(String name, String email, int schoolId, String userId) {
+    public Instructor(String name, String email, String schoolId, String userId) {
         super(name, email, schoolId, userId);
-        this.instructorId = idCounter;
+        this.instructorId = String.valueOf(idCounter);
         idCounter++;
     }
 
-    public int getInstructorId() {
+    public String getInstructorId() {
         return instructorId;
     }
 

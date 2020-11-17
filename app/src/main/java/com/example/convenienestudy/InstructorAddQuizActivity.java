@@ -26,8 +26,7 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
     private DatabaseReference quizRef = userRef.child("lstOfQuiz");
-    private String title, description, noOfQuiz;
-    private int instructorId;
+    private String title, description, noOfQuiz, instructorId;
     private SharedPreferences mPreferences;
 
     @Override
@@ -40,7 +39,7 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
         quizDescription = (TextInputLayout) findViewById(R.id.createQuizDescription);
 
         mPreferences = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
-        instructorId = mPreferences.getInt(LoginActivity.instructorIdKey, 0);
+        instructorId = mPreferences.getString(LoginActivity.instructorIdKey, "EMPTY");
 
         Intent getIntent = getIntent();
         noOfQuiz = Integer.toString(getIntent.getIntExtra("numberOfQuiz", 0));

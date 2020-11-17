@@ -37,8 +37,8 @@ public class InstructorQuizActivity extends AppCompatActivity {
     private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton;
     private DatabaseReference usersRef, quizRef, questionRef;
     private Quiz quiz;
-    private String quizNumberString;
-    private int quizNumber, instructorId, schoolId;
+    private String quizNumberString, instructorId, schoolId;
+    private int quizNumber;
     SharedPreferences mPreferences;
 
     @Override
@@ -53,8 +53,8 @@ public class InstructorQuizActivity extends AppCompatActivity {
         lstStudentId = new HashMap<String, String>();
 
         mPreferences = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
-        instructorId = mPreferences.getInt(LoginActivity.instructorIdKey, 0);
-        schoolId = mPreferences.getInt(LoginActivity.schoolIdKey, 0);
+        instructorId = mPreferences.getString(LoginActivity.instructorIdKey, "EMPTY");
+        schoolId = mPreferences.getString(LoginActivity.schoolIdKey, "EMPTY");
 
         addQuestionButton = (Button) findViewById(R.id.addQuestionButton);
         deleteQuestionButton = (Button) findViewById(R.id.deleteQuestionButton);
@@ -150,7 +150,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
             else {//Publish
                 if(!lstStudentId.isEmpty()) {
                     for (Map.Entry<String, String> entry : lstStudentId.entrySet()) {
-                        usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(new Assignment(quiz.getQuizNumber(), Integer.parseInt(entry.getValue())));
+                        usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(new Assignment(quiz.getQuizNumberString(), entry.getValue()));
                     }
                     quiz.setQuizPublished(true);
                 }

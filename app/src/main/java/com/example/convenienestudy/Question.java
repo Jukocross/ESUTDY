@@ -79,10 +79,12 @@ public class Question implements Parcelable {
         return false;
     }
 
-    public void answerQuestion(String s, Quiz quiz){
+    public int answerQuestion(String s){
+        int score = 0;
         if (checkAnswer(s)){
-            quiz.updateCurrentScore(questionScore);
+            score = questionScore;
         }
+        return score;
     }
 
     public boolean isCompleted() {

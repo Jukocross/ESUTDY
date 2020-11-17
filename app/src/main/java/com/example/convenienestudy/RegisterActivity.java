@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner userSpinner, schoolSpinner;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
-    private HashMap<String, Integer> tempHashMap = new HashMap<String, Integer>();
+    private HashMap<String, String> tempHashMap = new HashMap<String, String>();
     private static final String TAG = "RegisterActivity";
 
     @Override
@@ -39,8 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        tempHashMap.put("SUTD", 0);
-        tempHashMap.put("ANU", 1);
+        tempHashMap.put("SUTD", "0");
+        tempHashMap.put("ANU", "1");
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     String selectedRole = userSpinner.getSelectedItem().toString();
-                                    int schoolId = tempHashMap.get(schoolSpinner.getSelectedItem().toString());
+                                    String schoolId = tempHashMap.get(schoolSpinner.getSelectedItem().toString());
                                     Log.d(TAG, "The value of selectedRole: " + selectedRole + " Testing for unknown char");
                                     Log.d(TAG, "Value of name and email: " + email + " " + name);
                                     if (selectedRole.equals("Instructor")){
