@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".InstructorReviewActivity"></activity>
+        <activity android:name=".InstructorQuizStudentFeedback"></activity>
+        <activity android:name=".InstructorReviewActivity" />
         <activity android:name=".StudentFeedbackActivity" />
         <activity android:name=".StudentQuizSummaryActivity" />
         <activity android:name=".StudentAnswerQuizActivity" />

@@ -73,9 +73,11 @@ public class StudentMainActivity extends AppCompatActivity {
                     Log.d("STUDENT MAIN ACTIVITY", "VALUE OF COMPLETED" + String.valueOf(completed));
                     Log.d("STUDENT MAIN ACTIVITY", tempAssignment.toString());
                     if(completed){
+                        Log.d("STUDENT MAIN ACTIVITY", "ADDED INTO COMPLETED");
                         completedAssignment.add(tempAssignment);
                     }
                     else{
+                        Log.d("STUDENT MAIN ACTIVITY", "ADDED INTO INCOMPLETE");
                         incompleteAssignment.add(tempAssignment);
                     }
                 }
@@ -85,7 +87,6 @@ public class StudentMainActivity extends AppCompatActivity {
 
             }
         });
-
 
         mPreference = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
         schoolId = mPreference.getString(LoginActivity.schoolIdKey, "EMPTY");
@@ -98,18 +99,20 @@ public class StudentMainActivity extends AppCompatActivity {
                         for (DataSnapshot ds2: ds.child("lstOfQuiz").getChildren()){
                             for (Assignment a : incompleteAssignment){
                                 String tempQuizNumber = a.getQuizNumber();
-                                if (tempQuizNumber.equals(String.valueOf(ds2.child("quizNumber").getValue(int.class)))){
+                                if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){
+                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE INCOMPLETEHASHMAP " + tempQuizNumber);
                                     incompleteQuiz.put(tempQuizNumber, ds2.getValue(Quiz.class));
                                 }
                                 else{
-                                    completedQuiz.put(tempQuizNumber, ds2.getValue(Quiz.class));
+                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + tempQuizNumber);
+                                    completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
                                 }
                             }
                         }
-                        completedQuizRV.setAdapter(completedQuizAdapter);
-                        incompleteQuizRV.setAdapter(incompleteQuizAdapter);
                     }
                 }
+                incompleteQuizRV.setAdapter(incompleteQuizAdapter);
+                completedQuizRV.setAdapter(completedQuizAdapter);
             }
 
             @Override

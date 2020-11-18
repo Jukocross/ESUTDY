@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
     private HashMap<String, String> lstStudentId;
     private RecyclerView questionRV;
     private RecyclerViewAdapterInstructorQuestion questionAdapter;
-    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton;
+    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton, feedbackQuizButton;
     private DatabaseReference usersRef, quizRef, questionRef;
     private Quiz quiz;
     private String quizNumberString, instructorId, schoolId;
@@ -60,6 +61,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
         deleteQuestionButton = (Button) findViewById(R.id.deleteQuestionButton);
         deleteQuizButton = (Button) findViewById(R.id.deleteQuizButton);
         publishQuizButton = (Button) findViewById(R.id.publishQuizButton);
+        feedbackQuizButton = (Button) findViewById(R.id.feedbackQuizButton);
 
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
         Query studentQuery = usersRef.orderByChild("schoolId").equalTo(schoolId);
@@ -84,6 +86,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
         deleteQuestionButton.setOnClickListener(deleteQuestionListener);
         deleteQuizButton.setOnClickListener(deleteQuizListener);
         publishQuizButton.setOnClickListener(publishQuizListener);
+        feedbackQuizButton.setOnClickListener(feedbackQuizListener);
 
         Intent intent = getIntent();
         quiz = intent.getExtras().getParcelable("quizObject");
@@ -143,19 +146,19 @@ public class InstructorQuizActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (quiz.isQuizPublished()){//Unpublish
                 for (Map.Entry<String, String> entry: lstStudentId.entrySet()){
-                    usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(null);
+                    usersRef.child(entry.getKey()).child("listOfAssignment").child(quizNumberString).setValue(null);
                 }
                 quiz.setQuizPublished(false);
             }
             else {//Publish
                 if(!lstStudentId.isEmpty()) {
                     for (Map.Entry<String, String> entry : lstStudentId.entrySet()) {
-                        usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(new Assignment(quiz.getQuizNumberString(), entry.getValue()));
+                        usersRef.child(entry.getKey()).child("listOfAssignment").child(quizNumberString).setValue(new Assignment(quizNumberString, entry.getValue()));
                     }
                     quiz.setQuizPublished(true);
                 }
             }
-            quizRef.child(quiz.getQuizNumberString()).child("quizPublished").setValue(quiz.isQuizPublished());
+            quizRef.child(quizNumberString).child("quizPublished").setValue(quiz.isQuizPublished());
             Intent tempIntent = new Intent(InstructorQuizActivity.this, InstructorQuizActivity.class);
             tempIntent.putExtra("quizObject", quiz);
             startActivity(tempIntent);
@@ -173,8 +176,8 @@ public class InstructorQuizActivity extends AppCompatActivity {
                         Quiz temp = ds.getValue(Quiz.class);
                         int tempNumber = temp.getQuizNumber();
                         if (tempNumber > quizNumber){
-                            quizRef.child(Integer.toString(tempNumber)).setValue(null);
-                            quizRef.child(Integer.toString(tempNumber-1)).setValue(new Quiz(temp.getTitle(), temp.getDescription(), tempNumber-1, instructorId));
+                            quizRef.child(String.valueOf(tempNumber)).setValue(null);
+                            quizRef.child(String.valueOf(tempNumber-1)).setValue(new Quiz(temp.getTitle(), temp.getDescription(), tempNumber-1, instructorId));
                         }
                     }
                 }
@@ -183,7 +186,39 @@ public class InstructorQuizActivity extends AppCompatActivity {
 
                 }
             });
+            if(quiz.isQuizPublished()){
+                for (final Map.Entry<String, String> entry : lstStudentId.entrySet()){
+                    usersRef.child(entry.getKey()).child("listOfAssignment").child(quiz.getQuizNumberString()).setValue(null);
+                    usersRef.child(entry.getKey()).child("listOfAssignment").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds: snapshot.getChildren()){
+                                Assignment tempAssignment = ds.getValue(Assignment.class);
+                                int tempAssignmentNumber = Integer.parseInt(tempAssignment.getQuizNumber());
+                                if (tempAssignmentNumber > quizNumber){
+                                    usersRef.child(entry.getKey()).child("listOfAssignment").child(String.valueOf(tempAssignmentNumber)).setValue(null);
+                                    usersRef.child(entry.getKey()).child("listOfAssignment").child(String.valueOf(tempAssignmentNumber-1)).setValue(new Assignment(String.valueOf(tempAssignmentNumber-1), tempAssignment.getStudentId()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
             startActivity(new Intent(InstructorQuizActivity.this, InstructorMainActivity.class));
+        }
+    };
+
+    View.OnClickListener feedbackQuizListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent feedbackIntent = new Intent(InstructorQuizActivity.this, InstructorQuizStudentFeedback.class);
+            feedbackIntent.putExtra("listOfStudent", (Serializable) lstStudentId);
+            startActivity(feedbackIntent);
         }
     };
 
