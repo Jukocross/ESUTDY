@@ -2,11 +2,16 @@ package com.example.convenienestudy;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.CalendarContract;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class Assignment implements Parcelable {
@@ -80,9 +85,17 @@ public class Assignment implements Parcelable {
     }
 
     private String makeDueDate(){
-        LocalDateTime localDateTime = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        //LocalDateTime localDateTime = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        //localDateTime = localDateTime.plusDays(7);
+
+        LocalDateTime localDateTime = LocalDateTime.now();
         localDateTime = localDateTime.plusDays(7);
-        return localDateTime.toString();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.systemDefault());
+        Instant instant = zonedDateTime.toInstant();
+        Date date = Date.from(instant);
+        String date_without_time = DateFormat.getDateInstance().format(date);
+        String res = new StringBuilder("Due: ").append(date_without_time).toString();
+        return res;
     }
 
     @Override
