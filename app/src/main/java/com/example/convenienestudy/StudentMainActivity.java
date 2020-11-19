@@ -97,6 +97,10 @@ public class StudentMainActivity extends AppCompatActivity {
                 for (DataSnapshot ds: snapshot.getChildren()){
                     if (ds.hasChild("instructorId")){
                         for (DataSnapshot ds2: ds.child("lstOfQuiz").getChildren()){
+                            if (incompleteAssignment.isEmpty()){
+                                completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
+                                break;
+                            }
                             for (Assignment a : incompleteAssignment){
                                 String tempQuizNumber = a.getQuizNumber();
                                 if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){

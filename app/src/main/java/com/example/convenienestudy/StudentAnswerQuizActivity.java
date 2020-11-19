@@ -51,7 +51,12 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
             //Log.d("Answer_Question Debug", "Total Question" + Integer.toString(lstQuestions.size()));
             //Log.d("Answer_Question Debug", "Quiz Address " + System.identityHashCode(quiz));
             if (!tempQuestion.isCompleted()){
-                if (lstQuestions.get(i+1).isCompleted()){
+                if (lstQuestions.size() == 1){
+                    lastQuestionIndicator = true;
+                    Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
+                    Log.d("Answer_Question Debug", "Last Question ");
+                }
+                else if (lstQuestions.get(i+1).isCompleted()){
                     lastQuestionIndicator = true;
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
                     Log.d("Answer_Question Debug", "Last Question ");
