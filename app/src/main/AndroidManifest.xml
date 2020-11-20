@@ -15,6 +15,7 @@
         <activity android:name=".StudentFeedbackActivity" />
         <activity android:name=".StudentQuizSummaryActivity" />
         <activity android:name=".StudentAnswerQuizActivity" />
+        <activity android:name="InstructorQuizStudentFeedback"/>
         <activity android:name=".StudentQuizActivity"
             android:parentActivityName=".StudentMainActivity"/>
         <activity android:name=".InstructorDeleteQuestion" />

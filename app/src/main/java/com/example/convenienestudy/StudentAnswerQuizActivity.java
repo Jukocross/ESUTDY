@@ -56,7 +56,6 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
                     Log.d("Answer_Question Debug", "Last Question ");
                 }
-
                 else if (lstQuestions.get(i+1).isCompleted()){
                     lastQuestionIndicator = true;
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
@@ -71,7 +70,6 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
             }
         }
         nextQuestion.setOnClickListener(nextQuestionListener);
-
     }
 
     View.OnClickListener nextQuestionListener = new View.OnClickListener(){
@@ -85,7 +83,9 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                 if(!quiz.updateQuestion(tempQuestion)){
                     Log.d("Answer_Question Debug", "ERROR IN UPDATING QUESTION");
                 };
-                assignment.setScore(tempQuestion.answerQuestion(selectedChoice));
+                int tempScore = tempQuestion.answerQuestion(selectedChoice);
+                assignment.setScore(tempScore);
+                assignment.addScoreArray(String.valueOf(tempScore));
                 Intent intent;
                 if (lastQuestionIndicator){
                     intent = new Intent(StudentAnswerQuizActivity.this, StudentQuizSummaryActivity.class);

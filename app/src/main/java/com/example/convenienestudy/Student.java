@@ -9,6 +9,8 @@ public class Student extends Users {
     private String studentId;
     private ArrayList<Assignment> listOfAssignment;
 
+    public Student(){};
+
     public Student(String name, String email, String schoolID , String userId) {
         super(name, email, schoolID, userId);
         this.studentId = String.valueOf(idCounter);

@@ -218,6 +218,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent feedbackIntent = new Intent(InstructorQuizActivity.this, InstructorQuizStudentFeedback.class);
             feedbackIntent.putExtra("listOfStudent", (Serializable) lstStudentId);
+            feedbackIntent.putExtra("quizObject", quiz);
             startActivity(feedbackIntent);
         }
     };

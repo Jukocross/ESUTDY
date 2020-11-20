@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Assignment implements Parcelable {
@@ -19,6 +20,7 @@ public class Assignment implements Parcelable {
     private String feedback = "Await Feedback";
     private boolean completed;
     private String studentId, quizNumber, dueDate;
+    private ArrayList<String> scoreArray = new ArrayList<String>();
 
     public Assignment(){}
 
@@ -46,6 +48,7 @@ public class Assignment implements Parcelable {
         studentId = in.readString();
         quizNumber = in.readString();
         dueDate = in.readString();
+        scoreArray = in.readArrayList(String.class.getClassLoader());
     }
 
     public String getQuizNumber() {
@@ -66,6 +69,14 @@ public class Assignment implements Parcelable {
 
     public String getDueDate() {
         return dueDate;
+    }
+
+    public ArrayList<String> getScoreArray() {
+        return scoreArray;
+    }
+
+    public void addScoreArray(String score){
+        this.scoreArray.add(score);
     }
 
     public boolean isCompleted() {
@@ -116,5 +127,6 @@ public class Assignment implements Parcelable {
         dest.writeString(studentId);
         dest.writeString(quizNumber);
         dest.writeString(dueDate);
+        dest.writeList(scoreArray);
     }
 }
