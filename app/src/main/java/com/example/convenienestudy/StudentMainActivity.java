@@ -2,13 +2,20 @@ package com.example.convenienestudy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,9 +42,11 @@ public class StudentMainActivity extends AppCompatActivity {
     private DatabaseReference userRef = usersRef.child(userId);
     private RecyclerView completedQuizRV, incompleteQuizRV;
     private RecyclerViewAdapaterStudentCompletedQuiz completedQuizAdapter, incompleteQuizAdapter;
-    private EditText welcome_name;
+    private TextView workspace_header;
     private String schoolId;
     private SharedPreferences mPreference;
+    private TextView quiz_progress_text;
+    private ProgressBar quiz_progress;
 
 
     @Override
@@ -45,7 +54,10 @@ public class StudentMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
 
-        welcome_name = (EditText) findViewById(R.id.welcome_name);
+        workspace_header = findViewById(R.id.workspace_header);
+        quiz_progress = findViewById(R.id.quiz_progress);
+        quiz_progress_text = findViewById(R.id.quiz_progress_text);
+
 
         completedAssignment = new ArrayList<Assignment>();
         incompleteAssignment = new ArrayList<Assignment>();
@@ -66,7 +78,7 @@ public class StudentMainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("name").getValue(String.class);
-                welcome_name.setText(name);
+                workspace_header.setText(name.toUpperCase() + "'S WORKSPACE");
                 for (DataSnapshot ds: snapshot.child("listOfAssignment").getChildren()){
                     Assignment tempAssignment = ds.getValue(Assignment.class);
                     boolean completed = tempAssignment.isCompleted();
@@ -81,12 +93,14 @@ public class StudentMainActivity extends AppCompatActivity {
                         incompleteAssignment.add(tempAssignment);
                     }
                 }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
 
         mPreference = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
         schoolId = mPreference.getString(LoginActivity.schoolIdKey, "EMPTY");
@@ -101,6 +115,7 @@ public class StudentMainActivity extends AppCompatActivity {
                                 completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
                                 break;
                             }
+
                             for (Assignment a : incompleteAssignment){
                                 String tempQuizNumber = a.getQuizNumber();
                                 if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){
@@ -113,10 +128,28 @@ public class StudentMainActivity extends AppCompatActivity {
                                 }
                             }
                         }
+
+
+                        int progress = 100 * completedQuizAdapter.getItemCount() / (completedQuizAdapter.getItemCount() + incompleteQuizAdapter.getItemCount());
+                        quiz_progress.setProgress(progress, true);
+                        if (progress == 0) {
+                            quiz_progress_text.setText("Time to get started");
+                        }
+                        else if (progress < 50) {
+                            quiz_progress_text.setText("You have " + String.valueOf(100-progress) + "% more to go. Let's do it a quiz at a time");
+                        }
+                        else if(progress == 100) {
+                            quiz_progress_text.setText("You have finished all your quizzes. Go take a break!");
+                        }
+                        else {
+                            quiz_progress_text.setText("You are " + String.valueOf(progress) + "% there. Keep it up!");
+                        }
+
+
                     }
                 }
-                incompleteQuizRV.setAdapter(incompleteQuizAdapter);
-                completedQuizRV.setAdapter(completedQuizAdapter);
+                    completedQuizRV.setAdapter(completedQuizAdapter);
+                    incompleteQuizRV.setAdapter(incompleteQuizAdapter);
             }
 
             @Override
@@ -125,5 +158,23 @@ public class StudentMainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

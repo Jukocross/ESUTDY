@@ -7,25 +7,75 @@
     android:orientation="vertical"
     tools:context=".StudentFeedbackActivity">
 
-    <TextView
-        android:id="@+id/student_feedback"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="112dp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp"
-        android:text="Feedback"
-        android:textSize="20dp"/>
+        app:menu="@menu/menu_main">
+
+
+        <TextView
+            android:id="@+id/feedback_header"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:fontFamily="@font/ruluko"
+
+            android:text="@string/feedback_header"
+            android:textSize="18sp"
+            android:textStyle="bold"
+
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="18dp"
+            android:gravity="center"/>
+
+
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/student_feedback"
+        android:text="@string/feedback_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:background="@drawable/card_background"
+        android:scaleX="1.05"
+        android:paddingLeft="16dp"
+        android:paddingRight="26dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHeight_percent="0.2"/>
 
     <Button
-        android:id="@+id/feedback_backHome_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="152dp"
-        android:text="Back Home"
+        android:id="@+id/feedback_backHome_button"
+        android:text="Return to home"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/student_feedback" />
+        android:background="@drawable/button"
+        android:textColor="@color/brown"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintVertical_bias="0.95"
+        android:fontFamily="@font/ruluko"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,13 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".InstructorQuizStudentFeedback"></activity>
-        <activity android:name=".InstructorReviewActivity" />
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".InstructorReviewActivity"></activity>
         <activity android:name=".StudentFeedbackActivity" />
         <activity android:name=".StudentQuizSummaryActivity" />
         <activity android:name=".StudentAnswerQuizActivity" />
-        <activity android:name=".StudentQuizActivity" />
+        <activity android:name=".StudentQuizActivity"
+            android:parentActivityName=".StudentMainActivity"/>
         <activity android:name=".InstructorDeleteQuestion" />
         <activity android:name=".InstructorAddQuestion" />
         <activity android:name=".InstructorQuizActivity" />
@@ -32,6 +32,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

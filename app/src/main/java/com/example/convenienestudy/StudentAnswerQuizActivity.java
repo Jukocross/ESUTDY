@@ -44,7 +44,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
         quiz = intent.getExtras().getParcelable("quizObject");
         assignment = intent.getExtras().getParcelable("assignmentObject");
         lstQuestions = quiz.getListOfQuestion();
-        quizTitle.setText(quiz.getTitle());
+        quizTitle.setText("START " + quiz.getTitle().toUpperCase());
         for (int i = 0; i < lstQuestions.size(); ++i){
             tempQuestion = lstQuestions.get(i);
             Log.d("Answer_Question Debug", "Question " + Integer.toString(i) + " completeness: " + String.valueOf(tempQuestion.isCompleted()));
@@ -56,6 +56,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
                     Log.d("Answer_Question Debug", "Last Question ");
                 }
+
                 else if (lstQuestions.get(i+1).isCompleted()){
                     lastQuestionIndicator = true;
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
@@ -126,5 +127,10 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                 break;
         }
         Toast.makeText(StudentAnswerQuizActivity.this, selectedChoice, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(StudentAnswerQuizActivity.this, "Keep on going!", Toast.LENGTH_SHORT);
     }
 }
