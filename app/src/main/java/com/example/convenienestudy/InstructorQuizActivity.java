@@ -9,8 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,11 +39,12 @@ public class InstructorQuizActivity extends AppCompatActivity {
     private HashMap<String, String> lstStudentId;
     private RecyclerView questionRV;
     private RecyclerViewAdapterInstructorQuestion questionAdapter;
-    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton, feedbackQuizButton;
+    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton, feedbackQuizButton, publishQuiz_hide, deleteQuiz_hide;
     private DatabaseReference usersRef, quizRef, questionRef;
     private Quiz quiz;
     private String quizNumberString, instructorId, schoolId;
     private int quizNumber;
+    private LinearLayout add_delete_qns, publish_delete_qns;
     SharedPreferences mPreferences;
 
     @Override
@@ -62,6 +67,9 @@ public class InstructorQuizActivity extends AppCompatActivity {
         deleteQuizButton = (Button) findViewById(R.id.deleteQuizButton);
         publishQuizButton = (Button) findViewById(R.id.publishQuizButton);
         feedbackQuizButton = (Button) findViewById(R.id.feedbackQuizButton);
+
+        add_delete_qns = findViewById(R.id.add_delete_qns);
+        publish_delete_qns = findViewById(R.id.publish_delete_quiz);
 
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
         Query studentQuery = usersRef.orderByChild("schoolId").equalTo(schoolId);
@@ -94,7 +102,14 @@ public class InstructorQuizActivity extends AppCompatActivity {
         quizNumberString = quiz.getQuizNumberString();
         quizNumber = quiz.getQuizNumber();
         if (quiz.isQuizPublished()){
-            publishQuizButton.setText("Unpublish Quiz");
+            add_delete_qns.setVisibility(View.GONE);
+            publish_delete_qns.setVisibility(View.GONE);
+            publishQuizButton = findViewById(R.id.publishQuizButton_hide);
+            deleteQuizButton = findViewById(R.id.deleteQuizButton_hide);
+            add_delete_qns.setVisibility(View.GONE);
+            publish_delete_qns.setVisibility(View.GONE);
+            deleteQuizButton.setVisibility(View.VISIBLE);
+            publishQuizButton.setVisibility(View.VISIBLE);
         }
 
 
@@ -106,7 +121,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
         questionRef = quizRef.child(quizNumberString).child("listOfQuestion");
         questionRef.addValueEventListener(questionListener);
 
-        String score = quiz.getScoreToString();
+        String score = "Total Score: " + String.valueOf(quiz.getTotalScore());
 
         quizTitle.setText(title);
         quizScore.setText(score);
@@ -116,6 +131,28 @@ public class InstructorQuizActivity extends AppCompatActivity {
         questionAdapter  = new RecyclerViewAdapterInstructorQuestion(this, lstQuestion);
         questionRV.setLayoutManager(new LinearLayoutManager(this));
         questionRV.setAdapter(questionAdapter);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                startActivity(new Intent(InstructorQuizActivity.this, LoginActivity.class));
+                return true;
+            case R.id.home:
+                startActivity(new Intent(InstructorQuizActivity.this, InstructorMainActivity.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     View.OnClickListener addQuestionListener = new View.OnClickListener(){
@@ -233,7 +270,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
                     if (!lstQuestion.contains(temp)){
                         lstQuestion.add(temp);
                         temp.updateQuiz(quiz);
-                        quizScore.setText(quiz.getScoreToString());
+                        quizScore.setText("Total Score: " + String.valueOf(quiz.getTotalScore()));
                     }
                 }
                 questionRV.setAdapter(questionAdapter);

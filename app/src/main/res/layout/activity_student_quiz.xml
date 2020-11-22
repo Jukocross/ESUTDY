@@ -10,13 +10,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        style="@style/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_main"
@@ -24,18 +19,8 @@
 
         <TextView
             android:id="@+id/quiz_start_title"
-
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:fontFamily="@font/ruluko"
-
-            android:text="QUIZ 1"
-            android:textSize="18sp"
-            android:textStyle="bold"
-
-            android:gravity="center"
+            style="@style/TextCapsBold"
+            android:text="@string/quiz1_text"
             />
 
 
@@ -44,24 +29,13 @@
 
     <TextView
         android:id="@+id/quiz_start_description"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/ruluko"
-        android:text="Description"
-        android:textSize="18sp"
+        style="@style/cardView"
+        android:text="@string/description_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintHeight_percent="0.2"
-        android:background="@drawable/card_background"
-        android:scaleX="1.05"
-        android:paddingLeft="16dp"
-        android:paddingRight="26dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="8dp"/>
+        app:layout_constraintVertical_bias="0.1"/>
 
 
     <ImageView
@@ -82,37 +56,27 @@
 
     <TextView
         android:id="@+id/quiz_start_score"
+        style="@style/Text_Brown"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ruluko"
-        android:text="Score"
-        android:textSize="18sp"
+        android:text="@string/score_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        android:textColor="@color/brown"/>
+        app:layout_constraintVertical_bias="0.35" />
 
 
     <Button
         android:id="@+id/start_quiz_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/button"
-        android:fontFamily="@font/ruluko"
-        android:text="Start Quiz"
-        android:textSize="16sp"
+        style="@style/button"
+        android:text="@string/startQuiz_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95"
-        android:textColor="@color/brown"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

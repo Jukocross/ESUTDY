@@ -36,7 +36,7 @@ public class RecyclerViewAdapterInstructorQuiz extends RecyclerView.Adapter<Recy
     public void onBindViewHolder(@NonNull RecyclerViewAdapterInstructorQuiz.InstructorQuizViewHolder holder, final int position) {
         Log.d("RecyclerViewForInstructor", mData.get(position).getTitle());
         holder.quiz_title.setText(mData.get(position).getTitle());
-        holder.quiz_score.setText(mData.get(position).getScoreToString());
+        holder.quiz_score.setText("Total Score: " + mData.get(position).getTotalScore());
         holder.cardView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

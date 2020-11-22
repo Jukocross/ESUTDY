@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -22,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 public class InstructorAddQuizActivity extends AppCompatActivity {
 
     private Button createQuiz;
-    private TextInputLayout quizTitle, quizDescription;
+    private EditText quizTitle, quizDescription;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
     private DatabaseReference quizRef = userRef.child("lstOfQuiz");
@@ -35,8 +39,8 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_instructor_add_quiz);
 
         createQuiz = (Button) findViewById(R.id.createQuizButton);
-        quizTitle = (TextInputLayout) findViewById(R.id.createQuizTitle);
-        quizDescription = (TextInputLayout) findViewById(R.id.createQuizDescription);
+        quizTitle = (EditText) findViewById(R.id.createQuizTitle);
+        quizDescription = (EditText) findViewById(R.id.createQuizDescription);
 
         mPreferences = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
         instructorId = mPreferences.getString(LoginActivity.instructorIdKey, "EMPTY");
@@ -48,11 +52,32 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
         createQuiz.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                title = quizTitle.getEditText().getText().toString();
-                description = quizDescription.getEditText().getText().toString();
+                title = quizTitle.getText().toString();
+                description = quizDescription.getText().toString();
                 quizRef.addListenerForSingleValueEvent(checkForChild);
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                startActivity(new Intent(InstructorAddQuizActivity.this, LoginActivity.class));
+                return true;
+            case R.id.home:
+                startActivity(new Intent(InstructorAddQuizActivity.this,InstructorMainActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     ValueEventListener checkForChild = new ValueEventListener() {
