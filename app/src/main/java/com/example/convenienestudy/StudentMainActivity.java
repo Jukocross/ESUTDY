@@ -112,10 +112,9 @@ public class StudentMainActivity extends AppCompatActivity {
                     if (ds.hasChild("instructorId")){
                         for (DataSnapshot ds2: ds.child("lstOfQuiz").getChildren()){
                             if (incompleteAssignment.isEmpty()){
+                                Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + ds2.child("quizNumberString").getValue(String.class));
                                 completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
-                                break;
                             }
-
                             for (Assignment a : incompleteAssignment){
                                 String tempQuizNumber = a.getQuizNumber();
                                 if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){
@@ -123,14 +122,16 @@ public class StudentMainActivity extends AppCompatActivity {
                                     incompleteQuiz.put(tempQuizNumber, ds2.getValue(Quiz.class));
                                 }
                                 else{
-                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + tempQuizNumber);
+                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + ds2.child("quizNumberString").getValue(String.class));
                                     completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
                                 }
                             }
                         }
 
-
-                        int progress = 100 * completedQuizAdapter.getItemCount() / (completedQuizAdapter.getItemCount() + incompleteQuizAdapter.getItemCount());
+                    }
+                }
+                    if (!incompleteAssignment.isEmpty() || !completedAssignment.isEmpty()){
+                        int progress = 100 * completedAssignment.size() / (completedAssignment.size() + incompleteAssignment.size());
                         quiz_progress.setProgress(progress, true);
                         if (progress == 0) {
                             quiz_progress_text.setText("Time to get started");
@@ -144,12 +145,11 @@ public class StudentMainActivity extends AppCompatActivity {
                         else {
                             quiz_progress_text.setText("You are " + String.valueOf(progress) + "% there. Keep it up!");
                         }
-
-
+                    } else {
+                        quiz_progress_text.setText("You have no quiz yet");
                     }
-                }
-                    completedQuizRV.setAdapter(completedQuizAdapter);
-                    incompleteQuizRV.setAdapter(incompleteQuizAdapter);
+                incompleteQuizRV.setAdapter(incompleteQuizAdapter);
+                completedQuizRV.setAdapter(completedQuizAdapter);
             }
 
             @Override

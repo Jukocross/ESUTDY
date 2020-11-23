@@ -269,8 +269,8 @@ public class InstructorQuizActivity extends AppCompatActivity {
                     Question temp = ds.getValue(Question.class);
                     if (!lstQuestion.contains(temp)){
                         lstQuestion.add(temp);
-                        temp.updateQuiz(quiz);
-                        quizScore.setText("Total Score: " + String.valueOf(quiz.getTotalScore()));
+
+
                     }
                 }
                 questionRV.setAdapter(questionAdapter);

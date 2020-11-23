@@ -124,8 +124,8 @@ public class InstructorAddQuestion extends AppCompatActivity {
                 }
             }
             if (!existed){
-                questionRef.child(Integer.toString(questionId)).setValue(new Question(questionString, questionScore, answerString,mcq1, mcq2, mcq3, mcq4, quiz, questionId));
-                quizRef.child("totalScore").setValue(quiz.getTotalScore());
+                Question tempQuestion = new Question(questionString, questionScore, answerString, mcq1, mcq2, mcq3, mcq4, quiz, questionId);
+                quizRef.setValue(quiz);
                 intent = new Intent(InstructorAddQuestion.this, InstructorQuizActivity.class);
                 intent.putExtra("quizObject", quiz);
                 startActivity(intent);

@@ -111,7 +111,7 @@ public class Assignment implements Parcelable {
 
     @Override
     public String toString(){
-        return "Assignment: " + quizNumber + " belong to " + studentId;
+        return "Assignment: " + quizNumber + "(Quiz Number) belong to " + studentId + "(Student Id)";
     }
 
     @Override
