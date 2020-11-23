@@ -170,11 +170,20 @@ public class StudentMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(StudentMainActivity.this, LoginActivity.class));
                 return true;
+
+            case R.id.home:
+                startActivity(new Intent(StudentMainActivity.this, StudentMainActivity.class));
+                return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

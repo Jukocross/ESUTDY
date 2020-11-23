@@ -10,149 +10,70 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        style="@style/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         >
 
         <TextView
-            android:id="@+id/answer_question_title"
-            android:gravity="center"
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:fontFamily="@font/ruluko"
-
-            android:text="START QUIZ 1"
-            android:textSize="18sp"
-            android:textStyle="bold"
-
+            android:id="@+id/start_quiz_header"
+            style="@style/TextCapsBold"
+            android:text="@string/startQuiz_text"
             />
 
     </androidx.appcompat.widget.Toolbar>
 
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Question"
+        android:text="@string/question_text"
         android:id="@+id/answer_question_question"
+        style="@style/cardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:fontFamily="@font/ruluko"
-        android:textSize="18sp"
         app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintHeight_percent="0.2"
-        android:layout_marginRight="16dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/card_background"
-        android:scaleX="1.05"
-        android:paddingRight="26dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="8dp"
         />
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintVertical_bias="0.45"
-        app:layout_constraintHorizontal_bias="0"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         >
-
         <RadioButton
             android:id="@+id/answer_question_choice1"
-            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/brown"
-            android:fontFamily="@font/ruluko"
-
-            android:onClick="onRadioButtonClicked"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp"
-            android:text="Choice 1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
+            style="@style/radiobuttons"/>
         <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choice 2"
             android:id="@+id/answer_question_choice2"
-            android:onClick="onRadioButtonClicked"
-            android:fontFamily="@font/ruluko"
-            android:paddingTop="17dp"
-
-            android:buttonTint="@color/brown"
-            android:paddingBottom="17dp"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-
+            style="@style/radiobuttons"
+            />
         <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choice 3"
-
-            android:buttonTint="@color/brown"
             android:id="@+id/answer_question_choice3"
-            android:onClick="onRadioButtonClicked"
-            android:fontFamily="@font/ruluko"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-
+            style="@style/radiobuttons"
+            />
         <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choice 4"
-
-            android:buttonTint="@color/brown"
             android:id="@+id/answer_question_choice4"
-            android:onClick="onRadioButtonClicked"
-            android:fontFamily="@font/ruluko"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            style="@style/radiobuttons"
             />
     </RadioGroup>
 
     <Button
         android:id="@+id/answer_question_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ruluko"
-        android:text="Next Qn"
-        android:textSize="16sp"
+        style="@style/button"
+        android:text="@string/nextQn_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        android:background="@drawable/button"
-        android:textColor="@color/brown"/>
+        app:layout_constraintVertical_bias="0.95"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

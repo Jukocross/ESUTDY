@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +42,7 @@ public class InstructorQuizStudentFeedback extends AppCompatActivity {
 
         Intent getIntent = getIntent();
         listOfStudents = (HashMap<String,String>) getIntent.getSerializableExtra("listOfStudent");
+
         quiz = getIntent.getExtras().getParcelable("quizObject");
         students = new ArrayList<Student>();
         assignments = new HashMap<String, Assignment>();
@@ -69,6 +73,30 @@ public class InstructorQuizStudentFeedback extends AppCompatActivity {
 
                 }
             });
+        }
+
+
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                startActivity(new Intent(InstructorQuizStudentFeedback.this, LoginActivity.class));
+                return true;
+            case R.id.home:
+                startActivity(new Intent(InstructorQuizStudentFeedback.this, InstructorMainActivity.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

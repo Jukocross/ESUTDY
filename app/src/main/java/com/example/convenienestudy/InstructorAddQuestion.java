@@ -5,9 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -23,13 +29,14 @@ public class InstructorAddQuestion extends AppCompatActivity {
     //TODO SET THE IDCOUNTER TO THE BIGGER NUMBER WITHIN THE ARRAY
 
     private Button createQuestionButton;
-    private TextInputLayout question,answer, score, choice1, choice2, choice3, choice4;
+    private EditText question,answer, score, choice1, choice2, choice3, choice4;
     private DatabaseReference questionRef, quizRef;
     private Intent intent;
-    private String questionString, answerString, quizTitle, mcq1, mcq2, mcq3, mcq4;
+    private String questionString, answerString, quizTitle, mcq1, mcq2, mcq3, mcq4, questionScoreString;
     private int questionScore, questionId;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private Quiz quiz;
+    private TextView quiz_header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,30 +49,67 @@ public class InstructorAddQuestion extends AppCompatActivity {
 
         quizTitle = quiz.getTitle();
         createQuestionButton = (Button) findViewById(R.id.createQuestion_Button);
-        question = (TextInputLayout) findViewById(R.id.createQuestion_Question);
-        answer = (TextInputLayout) findViewById(R.id.createQuestion_Answer);
-        score = (TextInputLayout) findViewById(R.id.createQuestion_Score);
-        choice1 = (TextInputLayout) findViewById(R.id.createQuestion_Choice1);
-        choice2 = (TextInputLayout) findViewById(R.id.createQuestion_Choice2);
-        choice3 = (TextInputLayout) findViewById(R.id.createQuestion_Choice3);
-        choice4 = (TextInputLayout) findViewById(R.id.createQuestion_Choice4);
+        question = (EditText) findViewById(R.id.createQuestion_Question);
+        answer = (EditText) findViewById(R.id.createQuestion_Answer);
+        score = (EditText) findViewById(R.id.createQuestion_Score);
+        choice1 = (EditText) findViewById(R.id.createQuestion_Choice1);
+        choice2 = (EditText) findViewById(R.id.createQuestion_Choice2);
+        choice3 = (EditText) findViewById(R.id.createQuestion_Choice3);
+        choice4 = (EditText) findViewById(R.id.createQuestion_Choice4);
+        quiz_header = findViewById(R.id.quiz_header);
+
+
+        int questionNo = quiz.getListOfQuestion().size() / 5;
+        quiz_header.setText(quizTitle + ": QUESTION " + String.valueOf(questionNo));
 
         createQuestionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 quizRef = FirebaseDatabase.getInstance().getReference().child("Users").child(userId).child("lstOfQuiz").child(quiz.getQuizNumberString());
                 questionRef = quizRef.child("listOfQuestion");
-                questionString = question.getEditText().getText().toString();
-                answerString = answer.getEditText().getText().toString();
-                questionScore = Integer.parseInt(score.getEditText().getText().toString());
-                mcq1 = choice1.getEditText().getText().toString();
-                mcq2 = choice2.getEditText().getText().toString();
-                mcq3 = choice3.getEditText().getText().toString();
-                mcq4 = choice4.getEditText().getText().toString();
+                questionString = question.getText().toString();
+                answerString = answer.getText().toString();
+                questionScoreString = score.getText().toString();
+                mcq1 = choice1.getText().toString();
+                mcq2 = choice2.getText().toString();
+                mcq3 = choice3.getText().toString();
+                mcq4 = choice4.getText().toString();
+
+                if (TextUtils.isEmpty(questionString) || TextUtils.isEmpty(answerString) || TextUtils.isEmpty(String.valueOf(questionScore)) || TextUtils.isEmpty(mcq1) || TextUtils.isEmpty(mcq2)) {
+                    Toast.makeText(getApplicationContext(),"Please input all the necessary fields",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                questionScore = Integer.parseInt(questionScoreString);
+
+
+
                 questionRef.addListenerForSingleValueEvent(checkForChild);
             }
         });
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                startActivity(new Intent(InstructorAddQuestion.this, LoginActivity.class));
+                return true;
+            case R.id.home:
+                startActivity(new Intent(InstructorAddQuestion.this, InstructorMainActivity.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     ValueEventListener checkForChild = new ValueEventListener() {
@@ -95,6 +139,13 @@ public class InstructorAddQuestion extends AppCompatActivity {
         public void onCancelled(@NonNull DatabaseError error) {
 
         }
+
     };
 
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(InstructorAddQuestion.this, InstructorMainActivity.class));
+
+    }
 }

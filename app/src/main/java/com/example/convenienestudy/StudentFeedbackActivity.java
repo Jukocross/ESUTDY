@@ -60,7 +60,10 @@ public class StudentFeedbackActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(StudentFeedbackActivity.this, LoginActivity.class));
+                return true;
+            case R.id.home:
+                startActivity(new Intent(StudentFeedbackActivity.this, StudentMainActivity.class));
                 return true;
 
             default:
