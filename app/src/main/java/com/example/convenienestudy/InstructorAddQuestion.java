@@ -20,8 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class InstructorAddQuestion extends AppCompatActivity {
 
-    //TODO SET THE IDCOUNTER TO THE BIGGER NUMBER WITHIN THE ARRAY
-
     private Button createQuestionButton;
     private TextInputLayout question,answer, score, choice1, choice2, choice3, choice4;
     private DatabaseReference questionRef, quizRef;

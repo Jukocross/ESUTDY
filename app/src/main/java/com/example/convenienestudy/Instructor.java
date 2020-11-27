@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 public class Instructor extends Users {
 
-    private static int idCounter;
     private String instructorId;
     private ArrayList<Quiz> lstOfQuiz;
 
-    public Instructor(String name, String email, String schoolId, String userId) {
+    public Instructor(String name, String email, String schoolId, String userId, String instructorId) {
         super(name, email, schoolId, userId);
-        this.instructorId = String.valueOf(idCounter);
-        idCounter++;
+        this.instructorId = instructorId;
     }
 
     public String getInstructorId() {

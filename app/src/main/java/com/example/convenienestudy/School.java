@@ -4,19 +4,28 @@ import java.util.ArrayList;
 
 public class School{
 
-    private int schoolId;
-    private String name;
-    private ArrayList<Integer> listOfUsers;
+    private String name, studentIdCounter, instructorIdCounter, schoolId;
 
     public School() {
+        this.studentIdCounter = "-1";
+        this.instructorIdCounter = "-1";
     }
 
-    public School(int schoolId, String name){
-        this.name = name;
+    public School(String schoolId, String name){
         this.schoolId = schoolId;
+        this.name = name;
+        this.studentIdCounter = "-1";
+        this.instructorIdCounter = "-1";
     }
 
-    public int getSchoolId() {
+    public School(String schoolId, String name, String studentIdCounter, String instructorIdCounter) {
+        this.schoolId = schoolId;
+        this.name = name;
+        this.studentIdCounter = studentIdCounter;
+        this.instructorIdCounter = instructorIdCounter;
+    }
+
+    public String getSchoolId() {
         return schoolId;
     }
 
@@ -24,26 +33,11 @@ public class School{
         return name;
     }
 
-    public ArrayList<Integer> getListOfUsers() {
-        return listOfUsers;
+    public String getStudentIdCounter() {
+        return studentIdCounter;
     }
 
-    public boolean addUser(int id) {
-        boolean added = false;
-        if (!listOfUsers.contains(id)) {
-            this.listOfUsers.add(id);
-            added = true;
-        }
-        return added;
+    public String getInstructorIdCounter() {
+        return instructorIdCounter;
     }
-
-    public boolean removeUser(int id){
-        boolean removed = false;
-        if (listOfUsers.contains(id)){
-            this.listOfUsers.remove(id);
-            removed = true;
-        }
-        return removed;
-    }
-
 }

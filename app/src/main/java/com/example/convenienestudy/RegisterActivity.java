@@ -18,19 +18,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText emailField, passwordField, nameField;
+    private EditText emailField, passwordField, nameField, verifyPasswordField;
     private Button registerBtn;
     private Spinner userSpinner, schoolSpinner;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
-    private HashMap<String, String> tempHashMap = new HashMap<String, String>();
+    private DatabaseReference schoolRef = myRootRef.child("School");
+    private HashMap<String, String> tempHashMapSchoolId = new HashMap<String, String>();
+    private HashMap<String, String> tempHashMapStudentId = new HashMap<String, String>();
+    private HashMap<String, String> tempHashMapInstructorId = new HashMap<String, String>();
     private static final String TAG = "RegisterActivity";
 
     @Override
@@ -39,8 +46,24 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        tempHashMap.put("SUTD", "0");
-        tempHashMap.put("ANU", "1");
+        schoolRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    School tempSchoolObj = ds.getValue(School.class);
+                    Log.d("REGISTER", "THE TEMP School HAS " + tempSchoolObj.getName() + " And " + tempSchoolObj.getSchoolId()
+                            + " with " + tempSchoolObj.getStudentIdCounter() + " studentId and " + tempSchoolObj.getInstructorIdCounter() + " instructorId");
+                    tempHashMapSchoolId.put(tempSchoolObj.getName(), tempSchoolObj.getSchoolId());
+                    tempHashMapStudentId.put(tempSchoolObj.getName(), tempSchoolObj.getStudentIdCounter());
+                    tempHashMapInstructorId.put(tempSchoolObj.getName(), tempSchoolObj.getInstructorIdCounter());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -50,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField = (EditText) findViewById(R.id.register_password);
         registerBtn = (Button) findViewById(R.id.register_submit);
         nameField = (EditText) findViewById(R.id.register_name);
-
+        verifyPasswordField = (EditText) findViewById(R.id.register_verify_password);
 
         ArrayAdapter<CharSequence> userSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.user_array, android.R.layout.simple_spinner_item);
         userSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                 final String email = emailField.getText().toString();
                 final String password = passwordField.getText().toString();
                 final String name = nameField.getText().toString();
+                final String verifyPassword = verifyPasswordField.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(),
@@ -89,6 +113,13 @@ public class RegisterActivity extends AppCompatActivity {
                             .show();
                     return;
                 }
+                if (!password.equals(verifyPassword)){
+                    Toast.makeText(getApplicationContext(),
+                            "Password not match",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -96,18 +127,23 @@ public class RegisterActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     String selectedRole = userSpinner.getSelectedItem().toString();
-                                    String schoolId = tempHashMap.get(schoolSpinner.getSelectedItem().toString());
+                                    String selectedSchool = schoolSpinner.getSelectedItem().toString();
+                                    String schoolId = tempHashMapSchoolId.get(selectedSchool);
                                     Log.d(TAG, "The value of selectedRole: " + selectedRole + " Testing for unknown char");
                                     Log.d(TAG, "Value of name and email: " + email + " " + name);
                                     if (selectedRole.equals("Instructor")){
+                                        int addedInstructorValue = Integer.parseInt(tempHashMapInstructorId.get(selectedSchool)) + 1;
                                         Log.d(TAG, "The role " + selectedRole + " Selected");
                                         DatabaseReference userRef = myRootRef.child("Users").child(userId);
-                                        userRef.setValue(new Instructor(name, email,schoolId,userId));
+                                        userRef.setValue(new Instructor(name, email,schoolId,userId, String.valueOf(addedInstructorValue)));
+                                        schoolRef.child(schoolId).child("instructorIdCounter").setValue(String.valueOf(addedInstructorValue));
                                     }
                                     if (selectedRole.equals("Student")){
+                                        int addedStudentValue = Integer.parseInt(tempHashMapStudentId.get(selectedSchool)) + 1;
                                         Log.d(TAG, "The role " + selectedRole + "Selected");
                                         DatabaseReference userRef = myRootRef.child("Users").child(userId);
-                                        userRef.setValue(new Student(name, email,schoolId,userId));
+                                        userRef.setValue(new Student(name, email,schoolId,userId, String.valueOf(addedStudentValue)));
+                                        schoolRef.child(schoolId).child("studentIdCounter").setValue(String.valueOf(addedStudentValue));
                                     }
                                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                     Toast.makeText(getApplicationContext(),

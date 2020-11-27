@@ -31,10 +31,6 @@ import java.util.HashMap;
 
 public class StudentMainActivity extends AppCompatActivity {
 
-
-    //TODO STUDENT PAGES WITH COMPLETED ASSIGNMENT AND NON-COMPLETED ASSIGNMENT
-    //TODO ABLE TO DO NON-COMPLETE ASSIGNMENT AND UPDATE ACCORDINGLY
-    //TODO ABLE TO CHECK THE FEEDBACK IF THE ASSIGNMENT IS DONE
     private ArrayList<Assignment> completedAssignment, incompleteAssignment;
     private HashMap<String, Quiz> completedQuiz, incompleteQuiz;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -112,7 +108,7 @@ public class StudentMainActivity extends AppCompatActivity {
                     if (ds.hasChild("instructorId")){
                         for (DataSnapshot ds2: ds.child("lstOfQuiz").getChildren()){
                             if (incompleteAssignment.isEmpty()){
-                                Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + ds2.child("quizNumberString").getValue(String.class));
+                                Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP DUE TO EMPTY INCOMPLETE ASSIGNMENT" + ds2.child("quizNumberString").getValue(String.class));
                                 completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
                             }
                             for (Assignment a : incompleteAssignment){

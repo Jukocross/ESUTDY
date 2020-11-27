@@ -27,12 +27,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
-    //TODO SET STUDENT AND INSTRUCTOR COUNTER TO BE THE HIGHEST VALUE
-
     private EditText email, password;
     private Button registerBtn, loginBtn;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference schoolRef = myRootRef.child("School");
     private static final String TAG = "LoginActivity";
     public static final String instructorIdKey = "instructorId";
     public static final String schoolIdKey = "schoolId";

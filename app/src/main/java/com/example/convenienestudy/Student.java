@@ -5,16 +5,14 @@ import java.util.UUID;
 
 public class Student extends Users {
 
-    private static int idCounter = 0;
     private String studentId;
     private ArrayList<Assignment> listOfAssignment;
 
     public Student(){};
 
-    public Student(String name, String email, String schoolID , String userId) {
+    public Student(String name, String email, String schoolID , String userId, String studentId) {
         super(name, email, schoolID, userId);
-        this.studentId = String.valueOf(idCounter);
-        idCounter++;
+        this.studentId = studentId;
     }
 
     public String getStudentId() {
