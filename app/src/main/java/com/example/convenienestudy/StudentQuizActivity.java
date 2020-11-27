@@ -81,7 +81,11 @@ public class StudentQuizActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(StudentQuizActivity.this, LoginActivity.class));
+                return true;
+
+            case R.id.home:
+                startActivity(new Intent(StudentQuizActivity.this, StudentMainActivity.class));
                 return true;
 
             default:

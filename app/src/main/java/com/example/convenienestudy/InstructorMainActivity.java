@@ -9,7 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +33,12 @@ public class InstructorMainActivity extends AppCompatActivity {
     private FloatingActionButton btnFloating;
     private RecyclerViewAdapterInstructorQuiz quizAdapter;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+    private DatabaseReference userRef = usersRef.child(userId);
+    
     private DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("lstOfQuiz");
+    private TextView workspace_header;
+
 
     private static final String TAG ="Instructor Main Activity";
 
@@ -41,6 +51,19 @@ public class InstructorMainActivity extends AppCompatActivity {
         quizRV = (RecyclerView) findViewById(R.id.instructorQuiz_recyclerview_id);
         quizAdapter = new RecyclerViewAdapterInstructorQuiz(this, lstQuiz);
         btnFloating = (FloatingActionButton) findViewById(R.id.instructorQuiz_btnFloating);
+        workspace_header = findViewById(R.id.workspace_header);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name = snapshot.child("name").getValue(String.class);
+                workspace_header.setText(name.toUpperCase() + "'S WORKSPACE");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         quizRef.addValueEventListener(instructorQuizListener);
 
@@ -71,6 +94,28 @@ public class InstructorMainActivity extends AppCompatActivity {
 
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                startActivity(new Intent(InstructorMainActivity.this, LoginActivity.class));
+                return true;
+
+            case R.id.home:
+                startActivity(new Intent(InstructorMainActivity.this, InstructorMainActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     ValueEventListener instructorQuizListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -90,4 +135,9 @@ public class InstructorMainActivity extends AppCompatActivity {
             Log.d(TAG, error.toException().toString());
         }
     };
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

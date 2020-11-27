@@ -7,6 +7,7 @@
     tools:context=".RegisterActivity"
     android:background="@color/white">
 
+<<<<<<< HEAD
 
     <TextView
         android:id="@+id/register_intro"
@@ -34,11 +35,50 @@
         android:ems="10"
         android:fontFamily="@font/ruluko"
         android:hint="Name"
+=======
+    <ImageView
+        android:id="@+id/app_logo"
+        style="@style/app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.06"
+        app:layout_constraintHorizontal_bias="0.46"
+        />
+
+    <TextView
+        android:id="@+id/register_intro"
+        style="@style/Text_Brown"
+        android:text="@string/signup_header"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"/>
+
+    <TextView
+        style="@style/Text"
+        android:text="@string/name_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.32"/>
+
+
+    <EditText
+        android:id="@+id/register_name"
+        style="@style/edit_text"
+>>>>>>> 6c007ac81344914c61dc0107dfe98716f1f76081
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.278" />
 
     <EditText
@@ -51,28 +91,60 @@
         android:ems="10"
         android:fontFamily="@font/ruluko"
         android:hint="Email Address"
+=======
+        app:layout_constraintVertical_bias="0.37"/>
+
+    <TextView
+        style="@style/Text"
+        android:text="@string/email_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.45"/>
+
+    <EditText
+        android:id="@+id/register_email_address"
+        style="@style/edit_text"
+>>>>>>> 6c007ac81344914c61dc0107dfe98716f1f76081
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.359" />
+=======
+        app:layout_constraintVertical_bias="0.505"/>
+
+    <TextView
+        style="@style/Text"
+        android:text="@string/password_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.58"/>
+>>>>>>> 6c007ac81344914c61dc0107dfe98716f1f76081
 
     <EditText
         android:id="@+id/register_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/edit_text"
 
+<<<<<<< HEAD
         android:layout_marginHorizontal="16dp"
 
         android:ems="10"
         android:fontFamily="@font/ruluko"
         android:hint="Password"
+=======
+>>>>>>> 6c007ac81344914c61dc0107dfe98716f1f76081
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.439" />
 
     <EditText
@@ -91,79 +163,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499" />
+=======
+        app:layout_constraintVertical_bias="0.64"/>
+>>>>>>> 6c007ac81344914c61dc0107dfe98716f1f76081
 
     <TextView
         android:id="@+id/select_account_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:text="Select your account type"
-        app:layout_constraintVertical_bias="0.55"
+        style="@style/Text"
+
+        android:text="@string/selectAcc_text"
+        app:layout_constraintVertical_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:fontFamily="@font/ruluko"
-        android:textSize="18sp"
-        android:textColor="@color/brown"
         />
 
     <Spinner
         android:id="@+id/register_userSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/Text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.59"
-        tools:layout_editor_absoluteX="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp" />
+        app:layout_constraintVertical_bias="0.76"/>
 
     <TextView
         android:id="@+id/select_school_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:text="Select your school"
-        app:layout_constraintVertical_bias="0.67"
+        style="@style/Text"
+        android:text="@string/selectSch_text"
+        app:layout_constraintVertical_bias="0.83"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:fontFamily="@font/ruluko"
-        android:textSize="18sp"
-        android:textColor="@color/brown"
         />
 
     <Spinner
         android:id="@+id/register_schoolSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/Text"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.71"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"/>
+        app:layout_constraintVertical_bias="0.88"/>
 
     <Button
         android:id="@+id/register_submit"
-        android:text="Submit"
+        style="@style/button"
+
+        android:text="@string/submit_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82"
-        android:textColor="@color/brown"
-        android:background="@drawable/button"
-        android:layout_width="150dp"
-        android:layout_height="30dp"/>
+        app:layout_constraintVertical_bias=".95"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

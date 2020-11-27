@@ -12,19 +12,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
 
         <TextView
             android:id="@+id/studentQuiz_title_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ruluko"
-            android:gravity="left"
-            android:text="Quiz 1"
+            style="@style/Text"
+
+            android:text="@string/quiz1_text"
             android:textColor="@color/grey"
-            android:textSize="18sp"
+
             cardview:layout_constraintEnd_toEndOf="parent"
             cardview:layout_constraintHorizontal_bias="0.05"
             cardview:layout_constraintStart_toStartOf="parent"
@@ -34,11 +31,9 @@
 
         <TextView
             android:id="@+id/studentQuiz_due_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ruluko"
-            android:text="Due Date"
-            android:textColor="@color/brown"
+            style="@style/Text_Brown"
+            android:gravity="right"
+            android:text="@string/duedate_text"
             android:textSize="12sp"
             cardview:layout_constraintBottom_toBottomOf="parent"
             cardview:layout_constraintEnd_toEndOf="parent"

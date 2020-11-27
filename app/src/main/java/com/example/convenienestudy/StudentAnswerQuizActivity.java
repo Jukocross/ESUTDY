@@ -30,7 +30,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_answer_quiz);
 
-        quizTitle = (TextView) findViewById(R.id.answer_question_title);
+        quizTitle = (TextView) findViewById(R.id.start_quiz_header);
         questionTitle = (TextView) findViewById(R.id.answer_question_question);
         choice1 = (RadioButton) findViewById(R.id.answer_question_choice1);
         choice2 = (RadioButton) findViewById(R.id.answer_question_choice2);
@@ -56,6 +56,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
                     Log.d("Answer_Question Debug", "Last Question ");
                 }
+
                 else if (lstQuestions.get(i+1).isCompleted()){
                     lastQuestionIndicator = true;
                     Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
@@ -70,6 +71,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
             }
         }
         nextQuestion.setOnClickListener(nextQuestionListener);
+
     }
 
     View.OnClickListener nextQuestionListener = new View.OnClickListener(){
@@ -83,6 +85,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                 if(!quiz.updateQuestion(tempQuestion)){
                     Log.d("Answer_Question Debug", "ERROR IN UPDATING QUESTION");
                 };
+
                 int tempScore = tempQuestion.answerQuestion(selectedChoice);
                 assignment.setScore(tempScore);
                 assignment.addScoreArray(String.valueOf(tempScore));

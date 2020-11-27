@@ -9,4 +9,9 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/home"
+        android:title="@string/returnHome_text"
+        app:showAsAction="never"/>
+
 </menu>

@@ -1,46 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    tools:context=".InstructorAddQuizActivity"
-    android:orientation="vertical">
+    tools:context=".InstructorAddQuizActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_main">
+
+
+        <TextView
+            android:id="@+id/workspace_header"
+            style="@style/TextCapsBold"
+            android:text="@string/createQuiz_text"/>
+
+
+
+    </androidx.appcompat.widget.Toolbar>
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create Quiz"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        />
-    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Text"
+        android:text="@string/quiztitle_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.1"/>
+
+    <EditText
         android:id="@+id/createQuizTitle"
-        android:layout_width='match_parent'
-        android:layout_height='wrap_content'
-        android:hint="Quiz Title">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
+        style="@style/edit_text"
+        app:layout_constraintWidth_percent="0.93"
+
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.14"/>
+
+    <TextView
+        style="@style/Text"
+        android:text="@string/description_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.25"/>
+
+    <EditText
         android:id="@+id/createQuizDescription"
-        android:layout_width='match_parent'
-        android:layout_height='wrap_content'
-        android:hint="Description">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        style="@style/edit_text"
+        app:layout_constraintWidth_percent="0.93"
+
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"/>
+
+
+
     <Button
         android:id="@+id/createQuizButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/button"
         android:clickable="true"
-        android:text='Create'
+        android:text='@string/createQuiz_text'
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.4"
         />
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
