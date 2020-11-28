@@ -20,11 +20,17 @@ public class StudentQuizActivity extends AppCompatActivity {
     private Quiz quiz;
     private Assignment assignment;
     private Button startButton;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_quiz);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
 
         quizTitle = (TextView) findViewById(R.id.quiz_start_title);
@@ -84,7 +90,7 @@ public class StudentQuizActivity extends AppCompatActivity {
                 startActivity(new Intent(StudentQuizActivity.this, LoginActivity.class));
                 return true;
 
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(StudentQuizActivity.this, StudentMainActivity.class));
                 return true;
 

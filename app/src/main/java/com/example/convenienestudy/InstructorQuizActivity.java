@@ -2,6 +2,7 @@ package com.example.convenienestudy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,11 +47,17 @@ public class InstructorQuizActivity extends AppCompatActivity {
     private int quizNumber;
     private LinearLayout add_delete_qns, publish_delete_qns;
     SharedPreferences mPreferences;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_quiz);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         quizTitle = (TextView) findViewById(R.id.quizTitle_id);
         quizScore = (TextView) findViewById(R.id.quizScore_id);
@@ -62,14 +69,14 @@ public class InstructorQuizActivity extends AppCompatActivity {
         instructorId = mPreferences.getString(LoginActivity.instructorIdKey, "EMPTY");
         schoolId = mPreferences.getString(LoginActivity.schoolIdKey, "EMPTY");
 
-        addQuestionButton = (Button) findViewById(R.id.addQuestionButton);
-        deleteQuestionButton = (Button) findViewById(R.id.deleteQuestionButton);
-        deleteQuizButton = (Button) findViewById(R.id.deleteQuizButton);
-        publishQuizButton = (Button) findViewById(R.id.publishQuizButton);
-        feedbackQuizButton = (Button) findViewById(R.id.feedbackQuizButton);
+        addQuestionButton = (Button) findViewById(R.id.addQuestionButton); //visible when quiz not published
+        deleteQuestionButton = (Button) findViewById(R.id.deleteQuestionButton); //visible when quiz not published
+        deleteQuizButton = (Button) findViewById(R.id.deleteQuizButton); //visible when quiz not published
+        publishQuizButton = (Button) findViewById(R.id.publishQuizButton); //visible when quiz not published
+        feedbackQuizButton = (Button) findViewById(R.id.feedbackQuizButton); //always visible
 
-        add_delete_qns = findViewById(R.id.add_delete_qns);
-        publish_delete_qns = findViewById(R.id.publish_delete_quiz);
+        add_delete_qns = findViewById(R.id.add_delete_qns); //layout visible when quiz not published
+        publish_delete_qns = findViewById(R.id.publish_delete_quiz); //layout visible when quiz not published
 
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
         Query studentQuery = usersRef.orderByChild("schoolId").equalTo(schoolId);
@@ -90,11 +97,6 @@ public class InstructorQuizActivity extends AppCompatActivity {
             }
         });
 
-        addQuestionButton.setOnClickListener(addQuestionListener);
-        deleteQuestionButton.setOnClickListener(deleteQuestionListener);
-        deleteQuizButton.setOnClickListener(deleteQuizListener);
-        publishQuizButton.setOnClickListener(publishQuizListener);
-        feedbackQuizButton.setOnClickListener(feedbackQuizListener);
 
         Intent intent = getIntent();
         quiz = intent.getExtras().getParcelable("quizObject");
@@ -102,16 +104,22 @@ public class InstructorQuizActivity extends AppCompatActivity {
         quizNumberString = quiz.getQuizNumberString();
         quizNumber = quiz.getQuizNumber();
         if (quiz.isQuizPublished()){
+            //hiding unwanted layout
             add_delete_qns.setVisibility(View.GONE);
             publish_delete_qns.setVisibility(View.GONE);
+
+            //making new layout visible and reassigning variables
             publishQuizButton = findViewById(R.id.publishQuizButton_hide);
             deleteQuizButton = findViewById(R.id.deleteQuizButton_hide);
-            add_delete_qns.setVisibility(View.GONE);
-            publish_delete_qns.setVisibility(View.GONE);
             deleteQuizButton.setVisibility(View.VISIBLE);
             publishQuizButton.setVisibility(View.VISIBLE);
         }
 
+        addQuestionButton.setOnClickListener(addQuestionListener);
+        deleteQuestionButton.setOnClickListener(deleteQuestionListener);
+        deleteQuizButton.setOnClickListener(deleteQuizListener);
+        publishQuizButton.setOnClickListener(publishQuizListener);
+        feedbackQuizButton.setOnClickListener(feedbackQuizListener);
 
         quizRef = usersRef.child(userId).child("lstOfQuiz");
 
@@ -133,26 +141,30 @@ public class InstructorQuizActivity extends AppCompatActivity {
         questionRV.setAdapter(questionAdapter);
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out:
                 startActivity(new Intent(InstructorQuizActivity.this, LoginActivity.class));
                 return true;
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(InstructorQuizActivity.this, InstructorMainActivity.class));
                 return true;
-
-
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(InstructorQuizActivity.this, InstructorMainActivity.class));
     }
 
     View.OnClickListener addQuestionListener = new View.OnClickListener(){
@@ -269,8 +281,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
                     Question temp = ds.getValue(Question.class);
                     if (!lstQuestion.contains(temp)){
                         lstQuestion.add(temp);
-
-
+                        quizScore.setText("Total Score: " + String.valueOf(quiz.getTotalScore()));
                     }
                 }
                 questionRV.setAdapter(questionAdapter);

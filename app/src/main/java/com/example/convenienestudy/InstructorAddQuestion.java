@@ -2,6 +2,7 @@ package com.example.convenienestudy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class InstructorAddQuestion extends AppCompatActivity {
 
+
     private Button createQuestionButton;
     private EditText question,answer, score, choice1, choice2, choice3, choice4;
     private DatabaseReference questionRef, quizRef;
@@ -35,11 +37,18 @@ public class InstructorAddQuestion extends AppCompatActivity {
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private Quiz quiz;
     private TextView quiz_header;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_add_question);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
 
         Intent getIntent = getIntent();
         quiz = getIntent.getExtras().getParcelable("quizObject");
@@ -55,6 +64,8 @@ public class InstructorAddQuestion extends AppCompatActivity {
         choice3 = (EditText) findViewById(R.id.createQuestion_Choice3);
         choice4 = (EditText) findViewById(R.id.createQuestion_Choice4);
         quiz_header = findViewById(R.id.quiz_header);
+
+
 
 
         int questionNo = quiz.getListOfQuestion().size() / 5;
@@ -100,7 +111,7 @@ public class InstructorAddQuestion extends AppCompatActivity {
             case R.id.sign_out:
                 startActivity(new Intent(InstructorAddQuestion.this, LoginActivity.class));
                 return true;
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(InstructorAddQuestion.this, InstructorMainActivity.class));
                 return true;
 

@@ -2,11 +2,11 @@ package com.example.convenienestudy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,12 +37,16 @@ public class InstructorMainActivity extends AppCompatActivity {
     
     private DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("lstOfQuiz");
     private TextView workspace_header;
+    private Toolbar toolbar;
 
 
     private static final String TAG ="Instructor Main Activity";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_main);
 
@@ -52,6 +55,10 @@ public class InstructorMainActivity extends AppCompatActivity {
         quizAdapter = new RecyclerViewAdapterInstructorQuiz(this, lstQuiz);
         btnFloating = (FloatingActionButton) findViewById(R.id.instructorQuiz_btnFloating);
         workspace_header = findViewById(R.id.workspace_header);
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,8 +101,8 @@ public class InstructorMainActivity extends AppCompatActivity {
 
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
 
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
@@ -107,7 +114,7 @@ public class InstructorMainActivity extends AppCompatActivity {
                 startActivity(new Intent(InstructorMainActivity.this, LoginActivity.class));
                 return true;
 
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(InstructorMainActivity.this, InstructorMainActivity.class));
                 return true;
 
@@ -115,6 +122,7 @@ public class InstructorMainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     ValueEventListener instructorQuizListener = new ValueEventListener() {
         @Override
@@ -139,5 +147,11 @@ public class InstructorMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

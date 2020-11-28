@@ -31,6 +31,8 @@ import java.util.HashMap;
 
 public class StudentMainActivity extends AppCompatActivity {
 
+
+
     private ArrayList<Assignment> completedAssignment, incompleteAssignment;
     private HashMap<String, Quiz> completedQuiz, incompleteQuiz;
     private final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -43,12 +45,18 @@ public class StudentMainActivity extends AppCompatActivity {
     private SharedPreferences mPreference;
     private TextView quiz_progress_text;
     private ProgressBar quiz_progress;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         workspace_header = findViewById(R.id.workspace_header);
         quiz_progress = findViewById(R.id.quiz_progress);
@@ -110,7 +118,9 @@ public class StudentMainActivity extends AppCompatActivity {
                             if (incompleteAssignment.isEmpty()){
                                 Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP DUE TO EMPTY INCOMPLETE ASSIGNMENT" + ds2.child("quizNumberString").getValue(String.class));
                                 completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
+
                             }
+
                             for (Assignment a : incompleteAssignment){
                                 String tempQuizNumber = a.getQuizNumber();
                                 if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){
@@ -126,8 +136,8 @@ public class StudentMainActivity extends AppCompatActivity {
 
                     }
                 }
-                    if (!incompleteAssignment.isEmpty() || !completedAssignment.isEmpty()){
-                        int progress = 100 * completedAssignment.size() / (completedAssignment.size() + incompleteAssignment.size());
+                if (!incompleteAssignment.isEmpty() || !completedAssignment.isEmpty()){
+                    int progress = 100 * completedAssignment.size() / (completedAssignment.size() + incompleteAssignment.size());
                         quiz_progress.setProgress(progress, true);
                         if (progress == 0) {
                             quiz_progress_text.setText("Time to get started");
@@ -141,11 +151,14 @@ public class StudentMainActivity extends AppCompatActivity {
                         else {
                             quiz_progress_text.setText("You are " + String.valueOf(progress) + "% there. Keep it up!");
                         }
-                    } else {
-                        quiz_progress_text.setText("You have no quiz yet");
-                    }
-                incompleteQuizRV.setAdapter(incompleteQuizAdapter);
+
+
+                    } else{
+
+                    quiz_progress_text.setText("You have no quiz yet");
+                }
                 completedQuizRV.setAdapter(completedQuizAdapter);
+                incompleteQuizRV.setAdapter(incompleteQuizAdapter);
             }
 
             @Override
@@ -169,7 +182,7 @@ public class StudentMainActivity extends AppCompatActivity {
                 startActivity(new Intent(StudentMainActivity.this, LoginActivity.class));
                 return true;
 
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(StudentMainActivity.this, StudentMainActivity.class));
                 return true;
 

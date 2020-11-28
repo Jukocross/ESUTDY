@@ -19,11 +19,17 @@ public class StudentFeedbackActivity extends AppCompatActivity {
     private Button backHomeButton;
     private TextView feedback_header;
     private String quizTitle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_feedback);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         Intent getIntent = getIntent();
         quizTitle = getIntent.getExtras().getString("quizTitle");
@@ -62,7 +68,7 @@ public class StudentFeedbackActivity extends AppCompatActivity {
             case R.id.sign_out:
                 startActivity(new Intent(StudentFeedbackActivity.this, LoginActivity.class));
                 return true;
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(StudentFeedbackActivity.this, StudentMainActivity.class));
                 return true;
 
