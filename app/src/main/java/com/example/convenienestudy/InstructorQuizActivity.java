@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -200,6 +201,13 @@ public class InstructorQuizActivity extends AppCompatActivity {
                 quiz.setQuizPublished(false);
             }
             else {//Publish
+                if(lstQuestion.isEmpty()){
+                    Toast.makeText(getApplicationContext(),
+                            "Cannot publish empty quiz",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
                 if(!lstStudentId.isEmpty()) {
                     for (Map.Entry<String, String> entry : lstStudentId.entrySet()) {
                         usersRef.child(entry.getKey()).child("listOfAssignment").child(quizNumberString).setValue(new Assignment(quizNumberString, entry.getValue()));
