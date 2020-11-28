@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -74,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn = (Button) findViewById(R.id.register_submit);
         nameField = (EditText) findViewById(R.id.register_name);
         verifyPasswordField = (EditText) findViewById(R.id.register_verify_password);
+
 
         ArrayAdapter<CharSequence> userSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.user_array, android.R.layout.simple_spinner_item);
         userSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -161,4 +161,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+
+
+
+
 }

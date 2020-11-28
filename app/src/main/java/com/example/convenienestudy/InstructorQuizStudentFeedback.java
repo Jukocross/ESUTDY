@@ -2,6 +2,7 @@ package com.example.convenienestudy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,11 +35,17 @@ public class InstructorQuizStudentFeedback extends AppCompatActivity {
     private HashMap<String, Assignment> assignments;
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
     private final String TAG = "STUDENTFEEDBACK";
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_quiz_student_feedback);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         Intent getIntent = getIntent();
         listOfStudents = (HashMap<String,String>) getIntent.getSerializableExtra("listOfStudent");

@@ -53,6 +53,9 @@
     <string name="studentinfo_text">Student Information</string>
     <string name="submitfeedback_text">Submit Feedback</string>
     <string name="choice">Choice</string>
+    <string name="verify_password_text">Verify Password</string>
+    <string name="fill_in_quiz_title">Please fill in the quiz title</string>
+    <string name="quiz_exist_text">Quiz exist</string>
 
 
 </resources>

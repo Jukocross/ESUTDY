@@ -39,8 +39,9 @@ public class RecyclerViewAdapaterStudentCompletedQuiz extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapaterStudentCompletedQuiz.StudentCompletedQuizViewHolder holder, final int position) {
         final String tempQuizId = mDataAssignment.get(position).getQuizNumber();
-        Log.d("STUDENT MAIN ACTIVITY", "VALUE OF THE TEMPQUIZID " + tempQuizId);
+        Log.d("STUDENT MAIN ACTIVITY", "VALUE OF THE TEMPQUIZID" + tempQuizId);
         final String tempQuizTitle = mDataQuiz.get(tempQuizId).getTitle();
+
         Log.d("STUDENT MAIN ACTIVITY", "VALUE OF THE TITLE" + tempQuizTitle);
         holder.quiz_name.setText(tempQuizTitle);
         holder.due_date.setText(mDataAssignment.get(position).getDueDate());

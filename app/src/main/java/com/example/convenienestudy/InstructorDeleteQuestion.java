@@ -28,7 +28,7 @@ public class InstructorDeleteQuestion extends AppCompatActivity {
             case R.id.sign_out:
                 startActivity(new Intent(InstructorDeleteQuestion.this, LoginActivity.class));
                 return true;
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(InstructorDeleteQuestion.this, InstructorMainActivity.class));
                 return true;
 
