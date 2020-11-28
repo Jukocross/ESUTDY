@@ -1,6 +1,7 @@
 package com.example.convenienestudy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,11 +27,17 @@ public class InstructorReviewActivity extends AppCompatActivity {
     private Button feedbackSubmit;
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
     private String feedback, studentUserId;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_review);
+
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         feedbackSubmit = (Button) findViewById(R.id.feedback_submitButton);
         feedbackEdit = (EditText) findViewById(R.id.feedback_editText);
@@ -68,7 +75,7 @@ public class InstructorReviewActivity extends AppCompatActivity {
             case R.id.sign_out:
                 startActivity(new Intent(InstructorReviewActivity.this, LoginActivity.class));
                 return true;
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(InstructorReviewActivity.this, InstructorMainActivity.class));
                 return true;
 

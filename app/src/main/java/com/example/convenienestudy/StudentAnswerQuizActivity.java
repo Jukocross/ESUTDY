@@ -1,6 +1,7 @@
 package com.example.convenienestudy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,13 +54,15 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
             if (!tempQuestion.isCompleted()){
                 if (lstQuestions.size() == 1){
                     lastQuestionIndicator = true;
-                    Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Last Question", Toast.LENGTH_SHORT).show();
+                    nextQuestion.setText("Submit Quiz");
                     Log.d("Answer_Question Debug", "Last Question ");
                 }
 
                 else if (lstQuestions.get(i+1).isCompleted()){
                     lastQuestionIndicator = true;
-                    Toast.makeText(StudentAnswerQuizActivity.this, "Last Question", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Last Question", Toast.LENGTH_SHORT).show();
+                    nextQuestion.setText("Submit Quiz");
                     Log.d("Answer_Question Debug", "Last Question ");
                 }
                 questionTitle.setText(tempQuestion.getQuestionTitle());
@@ -81,7 +84,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
             if (!selectedChoice.isEmpty()){
                 tempQuestion.setCompleted(true);
                 Log.d("Answer_Question Debug", "Question Completeness " + String.valueOf(tempQuestion.isCompleted()));
-                Toast.makeText(StudentAnswerQuizActivity.this, String.valueOf(tempQuestion.isCompleted()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), String.valueOf(tempQuestion.isCompleted()), Toast.LENGTH_SHORT).show();
                 if(!quiz.updateQuestion(tempQuestion)){
                     Log.d("Answer_Question Debug", "ERROR IN UPDATING QUESTION");
                 };
@@ -101,7 +104,7 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else{
-                Toast.makeText(StudentAnswerQuizActivity.this, "No choice selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "No choice selected", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -129,11 +132,13 @@ public class StudentAnswerQuizActivity extends AppCompatActivity {
                     selectedChoice = choice4.getText().toString();
                 break;
         }
-        Toast.makeText(StudentAnswerQuizActivity.this, selectedChoice, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), selectedChoice, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(StudentAnswerQuizActivity.this, "Keep on going!", Toast.LENGTH_SHORT);
+        Toast.makeText(getApplicationContext(), "Keep on going!", Toast.LENGTH_SHORT).show();
+
+
     }
 }

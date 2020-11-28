@@ -1,6 +1,7 @@
 package com.example.convenienestudy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -31,13 +32,14 @@ public class StudentQuizSummaryActivity extends AppCompatActivity {
     private ImageView fireworks;
     private AnimationDrawable fireworks_anim;
     private TextView summary_header;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onStart() {
         super.onStart();
         fireworks = findViewById(R.id.fireworks);
-        fireworks.setBackgroundResource(R.drawable.fireworks_1);
+        fireworks.setBackgroundResource(R.drawable.fireworks_anim);
         fireworks_anim = (AnimationDrawable) fireworks.getBackground();
         fireworks_anim.start();
     }
@@ -46,7 +48,10 @@ public class StudentQuizSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_quiz_summary);
-
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         Intent getIntent = getIntent();
         quiz = getIntent.getExtras().getParcelable("quizObject");
@@ -93,7 +98,7 @@ public class StudentQuizSummaryActivity extends AppCompatActivity {
                 startActivity(new Intent(StudentQuizSummaryActivity.this, LoginActivity.class));
                 return true;
 
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(StudentQuizSummaryActivity.this, StudentMainActivity.class));
                 return true;
 

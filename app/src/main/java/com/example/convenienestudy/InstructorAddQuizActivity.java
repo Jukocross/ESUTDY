@@ -2,10 +2,12 @@ package com.example.convenienestudy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,15 +34,23 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
     private DatabaseReference quizRef = userRef.child("lstOfQuiz");
     private String title, description, noOfQuiz, instructorId;
     private SharedPreferences mPreferences;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_add_quiz);
 
+        toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
         createQuiz = (Button) findViewById(R.id.createQuizButton);
         quizTitle = (EditText) findViewById(R.id.createQuizTitle);
         quizDescription = (EditText) findViewById(R.id.createQuizDescription);
+
+
 
         mPreferences = getSharedPreferences(LoginActivity.sharedPreFile, MODE_PRIVATE);
         instructorId = mPreferences.getString(LoginActivity.instructorIdKey, "EMPTY");
@@ -52,7 +62,12 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
         createQuiz.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+
                 title = quizTitle.getText().toString();
+                if (TextUtils.isEmpty(title)) {
+                    Toast.makeText(getApplicationContext(),getString(R.string.fill_in_quiz_title),Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 description = quizDescription.getText().toString();
                 quizRef.addListenerForSingleValueEvent(checkForChild);
             }
@@ -71,7 +86,7 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
             case R.id.sign_out:
                 startActivity(new Intent(InstructorAddQuizActivity.this, LoginActivity.class));
                 return true;
-            case R.id.home:
+            case R.id.return_home:
                 startActivity(new Intent(InstructorAddQuizActivity.this,InstructorMainActivity.class));
                 return true;
 
@@ -79,6 +94,7 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     ValueEventListener checkForChild = new ValueEventListener() {
         @Override
@@ -96,7 +112,9 @@ public class InstructorAddQuizActivity extends AppCompatActivity {
                 startActivity(new Intent(InstructorAddQuizActivity.this, InstructorMainActivity.class));
             }
             else {
-                Toast.makeText(InstructorAddQuizActivity.this, "Quiz exist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InstructorAddQuizActivity.this,
+                        R.string.quiz_exist_text,
+                        Toast.LENGTH_SHORT).show();
             }
         }
 

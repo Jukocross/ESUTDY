@@ -11,6 +11,7 @@ public class School{
         this.instructorIdCounter = "-1";
     }
 
+
     public School(String schoolId, String name){
         this.schoolId = schoolId;
         this.name = name;
@@ -40,4 +41,6 @@ public class School{
     public String getInstructorIdCounter() {
         return instructorIdCounter;
     }
+
+
 }
