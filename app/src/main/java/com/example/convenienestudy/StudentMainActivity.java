@@ -115,21 +115,23 @@ public class StudentMainActivity extends AppCompatActivity {
                 for (DataSnapshot ds: snapshot.getChildren()){
                     if (ds.hasChild("instructorId")){
                         for (DataSnapshot ds2: ds.child("lstOfQuiz").getChildren()){
-                            if (incompleteAssignment.isEmpty()){
-                                Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP DUE TO EMPTY INCOMPLETE ASSIGNMENT" + ds2.child("quizNumberString").getValue(String.class));
-                                completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
-
-                            }
-
-                            for (Assignment a : incompleteAssignment){
-                                String tempQuizNumber = a.getQuizNumber();
-                                if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){
-                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE INCOMPLETEHASHMAP " + tempQuizNumber);
-                                    incompleteQuiz.put(tempQuizNumber, ds2.getValue(Quiz.class));
-                                }
-                                else{
-                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + ds2.child("quizNumberString").getValue(String.class));
+                            boolean tempPublished = ds2.child("quizPublished").getValue(boolean.class);
+                            Log.d("STUDENT MAIN ACTIVITY",  "VALUE OF TEMP BOOLEAN IS " + tempPublished);
+                            if (tempPublished){
+                                if (incompleteAssignment.isEmpty()){
+                                    Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP DUE TO EMPTY INCOMPLETE ASSIGNMENT" + ds2.child("quizNumberString").getValue(String.class));
                                     completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
+                                }
+                                for (Assignment a : incompleteAssignment){
+                                    String tempQuizNumber = a.getQuizNumber();
+                                    if (tempQuizNumber.equals(ds2.child("quizNumberString").getValue(String.class))){
+                                        Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE INCOMPLETEHASHMAP " + tempQuizNumber);
+                                        incompleteQuiz.put(tempQuizNumber, ds2.getValue(Quiz.class));
+                                    }
+                                    else{
+                                        Log.d("STUDENT MAIN ACTIVITY", "VALUE OF QUIZ NUMBER ADDED INTO THE COMPLETEHASHMAP " + ds2.child("quizNumberString").getValue(String.class));
+                                        completedQuiz.put(ds2.child("quizNumberString").getValue(String.class), ds2.getValue(Quiz.class));
+                                    }
                                 }
                             }
                         }

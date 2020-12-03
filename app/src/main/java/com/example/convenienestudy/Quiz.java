@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class Quiz implements Parcelable {
 
-    //TODO CURRENTSCORE CAN BE ABOLISH WITH THE NEW CLASS ASSIGNMENT
-
     private String title,description,instructorId;
     private int totalScore = 0;
     private int currentScore = 0;

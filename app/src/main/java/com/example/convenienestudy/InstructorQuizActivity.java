@@ -117,7 +117,6 @@ public class InstructorQuizActivity extends AppCompatActivity {
         }
 
         addQuestionButton.setOnClickListener(addQuestionListener);
-        deleteQuestionButton.setOnClickListener(deleteQuestionListener);
         deleteQuizButton.setOnClickListener(deleteQuizListener);
         publishQuizButton.setOnClickListener(publishQuizListener);
         feedbackQuizButton.setOnClickListener(feedbackQuizListener);
@@ -180,14 +179,6 @@ public class InstructorQuizActivity extends AppCompatActivity {
             }
             intent.putExtra("questionId", nextQuestionId);
             startActivity(intent);
-        }
-    };
-
-    View.OnClickListener deleteQuestionListener = new View.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-            startActivity(new Intent(InstructorQuizActivity.this, InstructorDeleteQuestion.class));
         }
     };
 

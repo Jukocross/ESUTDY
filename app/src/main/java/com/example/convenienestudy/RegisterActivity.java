@@ -22,9 +22,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -91,7 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
                 final String password = passwordField.getText().toString();
                 final String name = nameField.getText().toString();
                 final String verifyPassword = verifyPasswordField.getText().toString();
-
+                final String selectedRole = userSpinner.getSelectedItem().toString();
+                final String selectedSchool = schoolSpinner.getSelectedItem().toString();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(),
                             "Please enter email!!",
@@ -120,14 +123,19 @@ public class RegisterActivity extends AppCompatActivity {
                             .show();
                     return;
                 }
+                if(Objects.equals(tempHashMapInstructorId.get(selectedSchool), "0") && selectedRole.equals("Instructor")){
+                    Toast.makeText(getApplicationContext(),
+                            "Instructor Exist",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                    String selectedRole = userSpinner.getSelectedItem().toString();
-                                    String selectedSchool = schoolSpinner.getSelectedItem().toString();
                                     String schoolId = tempHashMapSchoolId.get(selectedSchool);
                                     Log.d(TAG, "The value of selectedRole: " + selectedRole + " Testing for unknown char");
                                     Log.d(TAG, "Value of name and email: " + email + " " + name);
@@ -143,6 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         Log.d(TAG, "The role " + selectedRole + "Selected");
                                         DatabaseReference userRef = myRootRef.child("Users").child(userId);
                                         userRef.setValue(new Student(name, email,schoolId,userId, String.valueOf(addedStudentValue)));
+                                        updateStudentAssignment(myRootRef, userRef, schoolId, String.valueOf(addedStudentValue));
                                         schoolRef.child(schoolId).child("studentIdCounter").setValue(String.valueOf(addedStudentValue));
                                     }
                                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -161,8 +170,28 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+    private void updateStudentAssignment(DatabaseReference myRootRef, final DatabaseReference userRef, String schoolId, final String studentId){
+        Query instructorQuery = myRootRef.child("Users").orderByChild("schoolId").equalTo(schoolId);
+        instructorQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds: snapshot.getChildren()){
+                        for (DataSnapshot ds2 : ds.child("lstOfQuiz").getChildren()){
+                            if (ds2.child("quizPublished").getValue(boolean.class)){
+                                if (ds.hasChild("instructorId")){
+                                    Quiz tempQuiz = ds2.getValue(Quiz.class);
+                                    userRef.child("listOfAssignment").child(tempQuiz.getQuizNumberString()).setValue(new Assignment(tempQuiz.getQuizNumberString(), studentId));
+                            }
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-
+            }
+        });
+    };
 
 }

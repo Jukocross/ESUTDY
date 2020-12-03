@@ -70,7 +70,7 @@ public class StudentQuizSummaryActivity extends AppCompatActivity {
         endOfQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //assignmentRef.child(assignment.getQuizNumber()).child("completed").setValue(true);
+                assignmentRef.child(assignment.getQuizNumber()).child("completed").setValue(true);
                 assignmentRef.child(assignment.getQuizNumber()).setValue(assignment);
                 startActivity(new Intent(StudentQuizSummaryActivity.this, StudentMainActivity.class));
             }
