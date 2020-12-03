@@ -41,7 +41,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
     private HashMap<String, String> lstStudentId;
     private RecyclerView questionRV;
     private RecyclerViewAdapterInstructorQuestion questionAdapter;
-    private Button addQuestionButton, deleteQuestionButton, deleteQuizButton, publishQuizButton, feedbackQuizButton;
+    private Button addQuestionButton, deleteQuizButton, publishQuizButton, feedbackQuizButton;
     private DatabaseReference usersRef, quizRef, questionRef;
     private Quiz quiz;
     private String quizNumberString, instructorId, schoolId;
@@ -71,7 +71,7 @@ public class InstructorQuizActivity extends AppCompatActivity {
         schoolId = mPreferences.getString(LoginActivity.schoolIdKey, "EMPTY");
 
         addQuestionButton = (Button) findViewById(R.id.addQuestionButton); //visible when quiz not published
-        deleteQuestionButton = (Button) findViewById(R.id.deleteQuestionButton); //visible when quiz not published
+
         deleteQuizButton = (Button) findViewById(R.id.deleteQuizButton); //visible when quiz not published
         publishQuizButton = (Button) findViewById(R.id.publishQuizButton); //visible when quiz not published
         feedbackQuizButton = (Button) findViewById(R.id.feedbackQuizButton); //always visible
