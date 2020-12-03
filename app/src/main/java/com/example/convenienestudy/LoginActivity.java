@@ -98,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                                             if (snapshot.hasChild("instructorId")){
                                                 instructorId = snapshot.child("instructorId").getValue(String.class);
                                                 startActivity(new Intent(getApplicationContext(), InstructorMainActivity.class));
-                                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                                                 finish();
                                             }
                                             if (snapshot.hasChild("studentId")){
@@ -112,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "E-mail or password is wrong", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "E-mail or password is wrong", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                 }
                             }

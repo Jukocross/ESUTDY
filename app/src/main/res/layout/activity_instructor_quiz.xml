@@ -96,12 +96,6 @@
             android:clickable="true"
             android:layout_marginHorizontal="4dp"
             />
-        <Button
-            android:id="@+id/deleteQuestionButton"
-            style="@style/button"
-            android:text="@string/deleteqn_text"
-            android:clickable="true"
-            android:layout_marginHorizontal="4dp"/>
     </LinearLayout>
 
     <Button
